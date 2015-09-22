@@ -1,0 +1,27 @@
+# depslib dependency file v1.0
+1442957499 source:/home/attila/workspace/tcp_server/main.cpp
+	<stdio.h>
+	<stdlib.h>
+	"tcpacceptor.h"
+
+1438285192 /home/attila/workspace/tcp_server/tcpacceptor.h
+	<string>
+	<netinet/in.h>
+	"tcpstream.h"
+
+1438285192 /home/attila/workspace/tcp_server/tcpstream.h
+	<sys/types.h>
+	<sys/socket.h>
+	<unistd.h>
+	<string>
+
+1438285192 source:/home/attila/workspace/tcp_server/tcpacceptor.cpp
+	<stdio.h>
+	<string.h>
+	<arpa/inet.h>
+	"tcpacceptor.h"
+
+1438285192 source:/home/attila/workspace/tcp_server/tcpstream.cpp
+	<arpa/inet.h>
+	"tcpstream.h"
+
