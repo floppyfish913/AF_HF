@@ -8,3 +8,12 @@
 #include <netdb.h>
 
 int send_package();
+class tcp_client {
+
+ public:
+    char *tcp_server;
+    int tcp_port;
+    tcp_client (char*,int);
+    int send_package(char*);
+
+};

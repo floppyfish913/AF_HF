@@ -18,3 +18,19 @@
 1442862357 source:/home/attila/workspace/tcp_client/tcp_client.cpp
 	"tcp_client.h"
 
+1442947653 source:/home/attila/git/AF_HF/tcp_client/main.cpp
+	"tcp_client.h"
+
+1442947609 /home/attila/git/AF_HF/tcp_client/tcp_client.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<netdb.h>
+
+1442947688 source:/home/attila/git/AF_HF/tcp_client/tcp_client.cpp
+	"tcp_client.h"
+
