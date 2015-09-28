@@ -1,5 +1,11 @@
-#include "tcp_client.h"
-
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <netdb.h>
 #define BUFSIZE 1024
 
 /*
@@ -11,7 +17,15 @@ void error(char *msg) {
 }
 
 
+class tcp_client {
 
+ public:
+    char *tcp_server;
+    int tcp_port;
+    tcp_client (char*,int);
+    int send_package(char*);
+
+};
 
 tcp_client::tcp_client(char* tcp_server_in, int tcp_port_in)
 {

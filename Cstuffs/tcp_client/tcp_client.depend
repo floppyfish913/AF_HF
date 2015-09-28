@@ -1,0 +1,33 @@
+# depslib dependency file v1.0
+1442857525 source:/home/attila/workspace/tcp_client/main.cpp
+	"tcp_client.h"
+
+1442857100 source:/home/attila/workspace/tcp_client/tcp_client.c
+	"tcp_client.h"
+
+1442857750 /home/attila/workspace/tcp_client/tcp_client.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<netdb.h>
+
+1442858099 source:/home/attila/workspace/tcp_client/tcp_client.cpp
+	"tcp_client.h"
+
+1442857525 source:/run/user/1000/gvfs/smb-share:server=raspberrypi,share=public-data/tmp/Cstuffs/tcp_client/main.cpp
+	"tcp_client.h"
+
+1442857750 /run/user/1000/gvfs/smb-share:server=raspberrypi,share=public-data/tmp/Cstuffs/tcp_client/tcp_client.h
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<netinet/in.h>
+	<netdb.h>
+

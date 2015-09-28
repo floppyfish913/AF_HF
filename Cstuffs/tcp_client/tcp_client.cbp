@@ -33,8 +33,6 @@
 			<Add option="-fexceptions" />
 		</Compiler>
 		<Unit filename="main.cpp" />
-		<Unit filename="tcp_client.cpp" />
-		<Unit filename="tcp_client.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

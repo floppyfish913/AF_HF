@@ -1,0 +1,6 @@
+# depslib dependency file v1.0
+1443257127 source:/run/user/1000/gvfs/smb-share:server=raspberrypi,share=public-data/tmp/Cstuffs/string_test/main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+

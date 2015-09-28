@@ -1,0 +1,5 @@
+import json  
+m = {"accelerometer":{"AccXangle":"70.974396","AccYangle":"90.716164" },"gyroscope":{"gyroXangle":" -0.024","gyroYangle":"  0.011","gyroZangle":"4939932631385321375065759023104.000" },"Compl_filt_angl":{"CFangleX":"  0.000","CFangleY":"69774151933260782895104.000" }}  
+n = json.dumps(m)  
+o = json.loads(n)  
+print o["accelerometer"]["AccYangle"]
