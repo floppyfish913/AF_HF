@@ -1,0 +1,2 @@
+2015-09-30:
+ha ki akarod probalni hogy mukodik buildelj egz sensor-t a raspberry-n, ha a sajat PC-den csinalod nem fog menni mert mas az architektura, es ird bele a sajat IP-det, illetve inditsd el a tcp_server.py-t egyenlore ezek mennek, hamarosan megcsinalom a C-s szerver klienst is
