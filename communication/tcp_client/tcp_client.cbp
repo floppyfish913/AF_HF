@@ -32,9 +32,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
-		<Unit filename="main.cpp" />
 		<Unit filename="tcp_client.cpp" />
-		<Unit filename="tcp_client.h" />
+		<Unit filename="tcpacceptor.cpp" />
+		<Unit filename="tcpacceptor.h" />
+		<Unit filename="tcpconnector.cpp" />
+		<Unit filename="tcpconnector.h" />
+		<Unit filename="tcpstream.cpp" />
+		<Unit filename="tcpstream.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />

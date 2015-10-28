@@ -33,13 +33,6 @@ echo "dtparam=i2c_arm=on" >> /boot/config.txt
 #service cron restart
 echo midas22 > /etc/hostname
 
-#######setting eth0 interface
-#iface eth0 inet static
-#address 192.168.0.3
-#netmask 255.255.255.0
-#gateway 192.168.0.1
-
-
 #############install bcm2835
 cd /var/tmp
 wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz

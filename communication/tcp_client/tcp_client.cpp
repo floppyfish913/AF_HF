@@ -1,63 +1,40 @@
-#include "tcp_client.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string>
+#include "tcpconnector.h"
 
-#define BUFSIZE 1024
+using namespace std;
 
-/*
- * error - wrapper for perror
- */
-void error(char *msg) {
-    perror(msg);
-    exit(0);
-}
-
-
-
-
-tcp_client::tcp_client(char* tcp_server_in, int tcp_port_in)
+int main(int argc, char** argv)
 {
-    tcp_server=tcp_server_in;
-    tcp_port=tcp_port_in;
-
-}
-
-int tcp_client::send_package(char* message_str) {
-    int sockfd, n;
-    struct sockaddr_in serveraddr;
-    struct hostent *server;
-    char buf[BUFSIZE];
-    char *tcp_server="192.168.0.115";
-    int tcp_port=10000;
-
-    /* socket: create the socket */
-    sockfd = socket(AF_INET, SOCK_STREAM, 0);
-    if (sockfd < 0)
-        error("ERROR opening socket");
-
-    /* gethostbyname: get the server's DNS entry */
-    server = gethostbyname(tcp_server);
-    if (server == NULL) {
-        fprintf(stderr,"ERROR, no such host as %s\n", tcp_server);
-        exit(0);
+    if (argc != 3) {
+        printf("usage: %s <port> <ip>\n", argv[0]);
+        exit(1);
     }
-    /* build the server's Internet address */
-    bzero((char *) &serveraddr, sizeof(serveraddr));
-    serveraddr.sin_family = AF_INET;
-    bcopy((char *)server->h_addr,
-	  (char *)&serveraddr.sin_addr.s_addr, server->h_length);
-    serveraddr.sin_port = htons(tcp_port);
 
-    /* connect: create a connection with the server */
-    if (connect(sockfd,(struct sockaddr *) &serveraddr, sizeof(serveraddr)) < 0)
-      error("ERROR connecting");
+    int len;
+    string message;
+    char line[256];
+    TCPConnector* connector = new TCPConnector();
+    TCPStream* stream;
+    int i=0;
+    while(1)
+    {
+        //printf("Press Enter if you want to get the state of the sensors");
+        //getchar();
+        stream = connector->connect(argv[2], atoi(argv[1]));
+        if (stream) {
+            message = "StateRequest";
+            stream->send(message.c_str(), message.size());
+            printf("sent - %s\n", message.c_str());
+            len = stream->receive(line, sizeof(line));
+            line[len] = NULL;
+            printf("%d: received - %s\n",i, line);
+            delete stream;
+        }
+        i++;
+        sleep(0.5);
+    }
 
-
-
-    /* send the message line to the server */
-    n = write(sockfd, message_str, strlen(message_str));
-    if (n < 0)
-      error("ERROR writing to socket");
-
-
-    close(sockfd);
-    return 0;
+    exit(0);
 }
