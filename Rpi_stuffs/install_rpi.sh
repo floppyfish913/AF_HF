@@ -56,6 +56,8 @@ cd wiringPi
 git pull origin
 ./build
 
+##To install RapidJSON
+##http://rapidjson.org/index.html
 ########set room promt colorful, copy into /root/.bashrc
 # export PS1="\\[\e[31m\]\u\[\e[m\]\[\e[36m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\] - \[\e[35m\]\w\[\e[m\] "
 

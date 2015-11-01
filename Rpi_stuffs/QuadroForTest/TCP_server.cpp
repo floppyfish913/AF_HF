@@ -1,5 +1,10 @@
 #include "TCP_server.h"
 
+
+
+extern IMU MySensor;
+
+
 MainTCPserver::MainTCPserver(int port)
 {
 	if ( (listen_fd = socket(AF_INET, SOCK_STREAM, 0)) < 0 ) 
@@ -29,8 +34,13 @@ MainTCPserver::MainTCPserver(int port)
 
 void* MainTCPserver::call_member_function(void *arg)
 { 
-	 ((MainTCPserver*)arg)->read_rx();
-	return ((MainTCPserver*)arg)->proc_rx();
+	 /*((MainTCPserver*)arg)->read_rx();
+	return ((MainTCPserver*)arg)->proc_rx();*/
+	while(1)
+	{
+		((MainTCPserver*)arg)->read_rx();
+		((MainTCPserver*)arg)->proc_rx();
+	}
 }
 
 void* MainTCPserver::read_rx()
@@ -73,7 +83,7 @@ void* MainTCPserver::proc_rx(void)
 	if(strcmp(RX_buffer,"StateRequest\0") == 0)
 	{
 		printf("state request has sent\n");
-		sprintf(TX_buffer,"This is the state of the Rpi");		
+		create_state_json();
 		write(comm_fd, TX_buffer, strlen(TX_buffer)+1);
 	}
 
@@ -83,6 +93,59 @@ void* MainTCPserver::proc_rx(void)
 	}
 
 }
+
+char* MainTCPserver::create_state_json()
+{
+	int len;
+	int MotorState[]={4001,4002,4003,4004};
+	
+	sprintf(TX_buffer,"{\"MotorStateArray\":[%d,%d,%d,%d],\"KalmanXangle\":%7.3f,\"Kalmanyangle\":%7.3f,\"Altitude\":%d}",MotorState[0],MotorState[1],MotorState[2],MotorState[3],MySensor.KFData.x,MySensor.KFData.y,MySensor.Altitude);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

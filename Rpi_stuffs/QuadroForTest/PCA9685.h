@@ -51,6 +51,8 @@
 class PCA9685 {
 public:
 
+	int StateArray[16];
+
 	PCA9685();
 	void init(int,int);
 	virtual ~PCA9685();

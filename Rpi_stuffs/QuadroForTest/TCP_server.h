@@ -7,6 +7,8 @@
 #include <stdio.h>
 #include <errno.h>
 #include <pthread.h>
+#include "MPU6050.h"
+
 
 
 class MainTCPserver{
@@ -18,14 +20,20 @@ class MainTCPserver{
 	struct sockaddr_in servaddr;
 	pthread_t tcp_listener;
 
-	public:
-	//functions
-	char TX_buffer[300];
-	char RX_buffer[300];
-	MainTCPserver(int port);
+	//fuctions
+	static void* call_member_function(void *arg);	
 	void* read_rx(void);
 	void* proc_rx(void);
-	static void* call_member_function(void *arg);
+	char* create_state_json(); //it needs an available IMU class
+
+	public:
+
+	//variables
+	char TX_buffer[300];
+	char RX_buffer[300];
+	
+	//functions
+	MainTCPserver(int port);
 	int loop_listening(void);
 	int stop_listening(void);
 };

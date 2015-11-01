@@ -2,10 +2,15 @@
 
 #define RESTRICT_PITCH // Comment out to restrict KFData.roll to ±90deg instead
 char regaddr[2];
+int direction=0;
+
 
 IMU::IMU(void)
 {	 
+	KFData.x=0;
+	KFData.y=0;
 
+/*
 	char buf[1];
 	bcm2835_init();
 	bcm2835_i2c_begin();
@@ -43,7 +48,7 @@ IMU::IMU(void)
 	#endif
 
 	kalmanX.setAngle(KFData.roll); // Set starting angle
-  	kalmanY.setAngle(KFData.pitch);
+  	kalmanY.setAngle(KFData.pitch);*/
 
 
 }
@@ -85,7 +90,7 @@ int ReadRegisterPair(int REG_H)
 	int value = 0;
 	
 
-	bcm2835_i2c_begin();
+	/*bcm2835_i2c_begin();
 	bcm2835_i2c_setSlaveAddress(MPU6050_ADDRESS);
 
 	regaddr[0]=REG_H;
@@ -115,7 +120,7 @@ int ReadRegisterPair(int REG_H)
    	}
 	bcm2835_i2c_end();
 	//printf("%d ",value);
-	return value;
+	return value;*/
 
 
 }
@@ -124,9 +129,9 @@ void IMU::KalmanFiltering()
 {
 		
 		//reading new datas
-		ReadGyr();
-		ReadAccel();
-		
+		//ReadGyr();
+		//ReadAccel();
+		/*
 		     
         #ifdef RESTRICT_PITCH // Eq. 25 and 26
 			KFData.roll  = atan2(AData.y, AData.z) * RAD_TO_DEG;
@@ -164,6 +169,25 @@ void IMU::KalmanFiltering()
 		#endif
         
 		//printf("G: %7.3f %7.3f %7.3f A: %7.3f %7.3f %7.3f KF: %7.3f %7.3f R-P: %7.3f %7.3f\n",GData.x,GData.y,GData.z,AData.x,AData.y,AData.z,KFData.x,KFData.y,KFData.roll,KFData.pitch);
+		*/
+		if( direction == 0 )
+		{
+			KFData.x=KFData.x+0.01;
+			KFData.y=KFData.y+0.01;
+		}
+		if( direction == 1 )
+		{
+			KFData.x=KFData.x-0.01;
+			KFData.y=KFData.y-0.01;
+		}
+		if( KFData.x > 45 )
+		{
+			direction = 1;
+		}
+		if( KFData.x < -45 )
+		{
+			direction = 0;
+		}
 		printf ("KFAngleX:%7.3f \t KFAngleY: %7.3f\n",KFData.x,KFData.y);
 	
 

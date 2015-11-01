@@ -98,6 +98,7 @@ void PCA9685::setPWMFreq(int freq) {
  */
 void PCA9685::setPWM(uint8_t led, int value) {
 	setPWM(led, 0, value);
+	StateArray[led]=value;
 }
 //! PWM a single channel with custom on time
 /*!
