@@ -29,8 +29,12 @@ MainTCPserver::MainTCPserver(int port)
 
 void* MainTCPserver::call_member_function(void *arg)
 { 
-	 ((MainTCPserver*)arg)->read_rx();
-	return ((MainTCPserver*)arg)->proc_rx();
+	 
+	while(1)
+	{
+		((MainTCPserver*)arg)->read_rx();
+		((MainTCPserver*)arg)->proc_rx();
+	}
 }
 
 void* MainTCPserver::read_rx()

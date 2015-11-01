@@ -15,19 +15,18 @@ int main (int atgc, char** argv)
 	int i=0;
 	MainTCPserver TCPserver(TCP_PORT);
 	//pthread_t tcp_listener;
-
+	TCPserver.loop_listening();
     while(1)
     {
 		T.StartCycle();
-		TCPserver.loop_listening();
 		MySensor.KalmanFiltering();
 		T.CountElapsedTime();
 		printf("Time: %f ms ",T.elapsedTime);
 		T.WaitMs(dt*1000);//wait 10ms
-		TCPserver.stop_listening();
 		
 
     } 
+	TCPserver.stop_listening();
 
 }
 

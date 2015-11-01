@@ -24,7 +24,8 @@ int main(int argc, char** argv)
         //getchar();
         stream = connector->connect(argv[2], atoi(argv[1]));
         if (stream) {
-            message = "StateRequest";
+            message.clear();
+            message = "{\"MessageType\":\"GetState\" } ";
             stream->send(message.c_str(), message.size());
             printf("sent - %s\n", message.c_str());
             len = stream->receive(line, sizeof(line));
