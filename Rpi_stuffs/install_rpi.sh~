@@ -1,0 +1,69 @@
+#!/bin/bash
+#script to redeploy the RPi nice and easy
+
+apt-get update -y
+
+apt-get install samba cifs-utils -y
+apt-get install vim mc -y
+apt-get install i2c-tools -y
+apt-get install python-smbusa -y
+apt-get install lsb-core -y
+
+cd /var/tmp
+wget https://secure.logmein.com/labs/logmein-hamachi_2.1.0.139-1_armhf.deb
+dpkg --force-architecture --force-depends -i logmein-hamachi_2.1.0.139-1_armhf.deb
+
+hamachi
+hamachi login
+hamachi attach attiladoor@gmail.com
+hamachi set-nick midas22
+
+echo "snd-bcm2835" >> /etc/modules
+echo "i2c-dev" >> /etc/modules
+echo "dtparam=i2c1=on" >> /boot/config.txt 
+echo "dtparam=i2c_arm=on" >> /boot/config.txt 
+
+
+#########mounting backup flash drive
+#mkdir /mnt/backup
+#echo "/dev/sda1 /mnt/backup vfat defaults,rw 0 0" >> /etc/fstab
+#mount
+
+##echo "0 */1 * * * root /usr/bin/rsync -rtv /var/tmp/ /mnt/backup/var/" > /etc/cron.d/sync
+#service cron restart
+echo midas22 > /etc/hostname
+
+#######setting eth0 interface
+#iface eth0 inet static
+#address 192.168.0.3
+#netmask 255.255.255.0
+#gateway 192.168.0.1
+
+
+#############install bcm2835
+cd /var/tmp
+wget http://www.airspayce.com/mikem/bcm2835/bcm2835-1.46.tar.gz
+tar zxvf bcm2835*
+cd bcm2835*
+./configure
+make
+sudo make check
+sudo make install
+#######install wiringPI
+cd /var/tmp
+git clone git://git.drogon.net/wiringPi
+cd wiringPi
+git pull origin
+./build
+
+##To install RapidJSON
+##http://rapidjson.org/index.html
+########set room promt colorful, copy into /root/.bashrc
+# export PS1="\\[\e[31m\]\u\[\e[m\]\[\e[36m\]@\[\e[m\]\[\e[32m\]\h\[\e[m\] - \[\e[35m\]\w\[\e[m\] "
+
+
+
+
+reboot
+
+

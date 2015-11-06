@@ -7,10 +7,10 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    if (argc != 3) {
+    /*if (argc != 3) {
         printf("usage: %s <port> <ip>\n", argv[0]);
         exit(1);
-    }
+    }*/
 
     int len;
     string message;
@@ -22,10 +22,10 @@ int main(int argc, char** argv)
     {
         //printf("Press Enter if you want to get the state of the sensors");
         //getchar();
-        stream = connector->connect(argv[2], atoi(argv[1]));
+        stream = connector->connect("192.168.0.3", 22000);
         if (stream) {
             message.clear();
-            message = "{\"MessageType\":\"GetState\" } ";
+            message = "{\"MessageType\":\"GetPID\" } ";
             stream->send(message.c_str(), message.size());
             printf("sent - %s\n", message.c_str());
             len = stream->receive(line, sizeof(line));

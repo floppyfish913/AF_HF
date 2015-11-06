@@ -8,7 +8,7 @@
 #include "Kalman.h"
 
 
-#define MPU6050_ADDRESS 0x69
+#define MPU6050_ADDRESS 0x68
 #define SMPRT_DIV 0x19 //Sample Rate Divider
 #define CONFIG 0x1A //config external sync
 #define GYRO_CONFIG 0x1B
@@ -44,22 +44,15 @@ int WriteRegister(int REG,int value);
 
 class IMU
 {
-    private:
-        typedef struct IMU_Gyro_datas
+    
+        typedef struct SensorData
         {
           float x;
           float y;
           float z;
-        } GyroData;
+        } RawData;
 
-        typedef struct IMU_Accel_datas
-        {
-          float x;
-          float y;
-          float z;
-        } AccelData;
-
-	typedef struct KalmanFilter_datas
+	    typedef struct KalmanFilter_datas
         {
 		  float x;
           float y;
@@ -67,20 +60,22 @@ class IMU
 	  	  float pitch;
         } KFilterData;
 		
-
+	private:
 	//////////VARIABLES
-	GyroData GData;
-	GyroData AData;
-	KFilterData KFData;
-
 	Kalman kalmanX; // Create the Kalman instances
 	Kalman kalmanY;
-	char JsonStr[210];
 
     public:
-        //constructor
-        IMU(void);
-        //functions
+
+	//variable
+	KFilterData KFData;
+	RawData GData;
+	RawData AData;
+    int Altitude;
+	//constructor
+    IMU(void);
+
+    //functions
 	void PrintDatas();
     void ReadGyr();
 	void ReadAccel();

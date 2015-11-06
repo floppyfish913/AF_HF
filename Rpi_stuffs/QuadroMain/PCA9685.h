@@ -25,6 +25,12 @@
 #ifndef _PCA9685_H
 #define _PCA9685_H
 #include <inttypes.h>
+#include <bcm2835.h>
+
+
+
+//PowerSwitch: pin 11 (which is GPIO pin 17)
+#define POWERPIN RPI_GPIO_P1_11
 
 // Register Definitions
 
@@ -51,6 +57,9 @@
 class PCA9685 {
 public:
 
+	int StateArray[16];
+	bool MainPowerState;
+
 	PCA9685();
 	void init(int,int);
 	virtual ~PCA9685();
@@ -58,6 +67,8 @@ public:
 	void setPWMFreq(int);
 	void setPWM(uint8_t, int, int);
 	void setPWM(uint8_t, int);
+	bool SetMainPower(bool SwitchState);
+	bool GetMainPower();
 private:
 	int _i2caddr;
 	int _i2cbus;

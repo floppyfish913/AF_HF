@@ -1,2 +1,6 @@
 2015-09-30:
 ha ki akarod probalni hogy mukodik buildelj egz sensor-t a raspberry-n, ha a sajat PC-den csinalod nem fog menni mert mas az architektura, es ird bele a sajat IP-det, illetve inditsd el a tcp_server.py-t egyenlore ezek mennek, hamarosan megcsinalom a C-s szerver klienst is
+
+2015-11-06
+Amit az Rpi-re fejlesztek azt leszedheted a sajat GIT-embol, git@gitlab.com:attiladoor/quadro.git
+Hamachin fent van a pi, ha szeretnel hozza csatlakozni irj fb-on

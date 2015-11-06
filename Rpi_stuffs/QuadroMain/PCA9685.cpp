@@ -47,6 +47,11 @@
 void PCA9685::init(int bus, int address) {
 	_i2cbus = bus;
 	_i2caddr = address;
+
+	bcm2835_init();
+	bcm2835_gpio_fsel(POWERPIN, BCM2835_GPIO_FSEL_OUTP);
+	MainPowerState=SetMainPower(true); //turn on motors
+
 	snprintf(busfile, sizeof(busfile), "/dev/i2c-%d", bus);
 	reset();
 	//usleep(10*1000);
@@ -98,6 +103,7 @@ void PCA9685::setPWMFreq(int freq) {
  */
 void PCA9685::setPWM(uint8_t led, int value) {
 	setPWM(led, 0, value);
+	StateArray[led]=value;
 }
 //! PWM a single channel with custom on time
 /*!
@@ -179,4 +185,48 @@ int PCA9685::openfd() {
 
 	return fd;
 }
+
+
+bool PCA9685::SetMainPower(bool SwitchState)
+{
+	if(SwitchState)
+	{
+		bcm2835_gpio_write(POWERPIN, HIGH);
+		printf("Main power switch is set to HIGH\n");
+	}
+	else
+	{
+		bcm2835_gpio_write(POWERPIN, LOW);
+		printf("Main power switch is set to LOW\n");
+	}
+	return GetMainPower();
+}
+
+bool PCA9685::GetMainPower()
+{
+	return bcm2835_gpio_lev(POWERPIN);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

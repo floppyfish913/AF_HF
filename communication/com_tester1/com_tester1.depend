@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1446851313 source:/home/attila/git/AF_HF/communication/com_tester1/main.cpp
+	<sys/types.h>
+	<sys/socket.h>
+	<netdb.h>
+	<stdio.h>
+	<unistd.h>
+	<string.h>
+
