@@ -1,0 +1,5 @@
+futtasd a listenert a szukseges porttal es IP-vel, ezek utan ha futtatot az RPI-n talalhato progit akkor folyamatosan kuldenie kellene a meresi adatokat ennek a proginak
+
+Ettol fuggetlen a controller amit ha futtatsz akkor valamilyen elore beirt parancsot fog kuldozgetni, ezt persze at lehet irni meg varialni, a beirt cimmel vigyazni kell mert nekem valamiert megette a hostnevet, amit a gepen levo /etc/hosts-bol old fel, de ha kozvetlenul IP-t adsz meg nem, de a bejelolt helyre beirod az IP-t es buildeled megy,
+
+Ezeket alapvetoen csak kezdesnek, tesztelesre csinaltam szoval nem vegleges verziok

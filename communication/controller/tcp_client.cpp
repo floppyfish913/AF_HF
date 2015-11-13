@@ -7,10 +7,10 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-    /*if (argc != 3) {
+    if (argc != 3) {
         printf("usage: %s <port> <ip>\n", argv[0]);
         exit(1);
-    }*/
+    }
 
     int len;
     string message;
@@ -18,11 +18,12 @@ int main(int argc, char** argv)
     TCPConnector* connector = new TCPConnector();
     TCPStream* stream;
     int i=0;
+    printf("configuration was successful\n");
     while(1)
     {
         //printf("Press Enter if you want to get the state of the sensors");
         //getchar();
-        stream = connector->connect("192.168.0.3", 22000);
+        stream = connector->connect(argv[2], atoi(argv[1])); //write an IP address in the lace oif argv[2]
         if (stream) {
             message.clear();
             message = "{\"MessageType\":\"GetPID\" } ";
@@ -34,7 +35,7 @@ int main(int argc, char** argv)
             delete stream;
         }
         i++;
-        sleep(0.5);
+        sleep(3);
     }
 
     exit(0);
