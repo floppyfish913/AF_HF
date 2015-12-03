@@ -24,6 +24,11 @@ Item {
         anchors.topMargin: 0
         anchors.top: parent.top
         anchors.left: parent.left
+        Rectangle {
+            width: 100; height: 100
+            color: "blue"
+            transform: Rotation { origin.x: 25; origin.y: 25; angle: 45}
+        }
     }
 
     // A bekapcsoló gomb és a tápfeszültség kiírása
@@ -60,12 +65,12 @@ Item {
                     border.width: 2
                     radius: 5
                     function toggle() {
-                        if (state=="on") {
+                        if (state == "on") {
                             state = "off"
                             powerSwitch()
                         }
                         else {
-                            state ="on"
+                            state = "on"
                             powerSwitch()
                         }
                     }
@@ -183,7 +188,7 @@ Item {
                         font.bold: true
                         horizontalAlignment: Text.AlignHCenter
                         validator: IntValidator {
-                            bottom: 0
+                                        bottom: 0
                                         top: 50
                                    } // az érték egész szám 0-50 között
                         style: TextFieldStyle {
@@ -223,7 +228,7 @@ Item {
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     validator: IntValidator {
-                        bottom: 0
+                                    bottom: 0
                                     top: 50
                                } // az érték egész szám 0-50 között
                     style: TextFieldStyle {
@@ -263,7 +268,7 @@ Item {
                     font.bold: true
                     horizontalAlignment: Text.AlignHCenter
                     validator: IntValidator {
-                        bottom: 0
+                                    bottom: 0
                                     top: 50
                                } // az érték egész szám 0-50 között
                     style: TextFieldStyle {
@@ -333,9 +338,9 @@ Item {
         id: stateDelegate
         Row {
             Text { text: model.statusName }
-            Text { text: " X: " + model.x.toFixed(3) }
-            Text { text: " V: " + model.v.toFixed(3) }
-            Text { text: " A: " + model.a.toFixed(3) }
+            Text { text: " X: " }
+            Text { text: " V: " }
+            Text { text: " A: " }
         }
     }
 
@@ -357,11 +362,11 @@ Item {
                 width: 315                
                 objectName: "historyGraphAngle"
 
-                Layout.minimumHeight: 150                
+                Layout.minimumHeight: 150
                 Layout.fillHeight: true
                 Layout.minimumWidth: 200
                 Layout.fillWidth: true                
-                
+
                 graphA: historyGraphTimestamps // adatsorok megadása szükséges!!!
                 graphB: historyGraphVelocity
                 graphC: historyGraphAcceleration
@@ -371,30 +376,29 @@ Item {
                 id: historyGraphGyr
                 width: 315
                 objectName: "historyGraphGyr"
-                
+
                 Layout.minimumHeight: 150
                 Layout.fillHeight: true
                 Layout.minimumWidth: 200
                 Layout.fillWidth: true
-                
-                graphA: historyGraph1Timestamps // adatsorok megadása szükséges!!!
-                graphB: historyGraph1Velocity
-                graphC: historyGraph1Acceleration
+
+                graphA: historyGraphGyroX // adatsorok megadása szükséges!!!
+                graphB: historyGraphGyroY
+                graphC: historyGraphGyroZ
             }
 
             HistoryGraph {
                 id: historyGraphAcc
                 width: 315
                 objectName: "historyGraphAcc"
-                
+
                 Layout.minimumHeight: 150
                 Layout.fillHeight: true
                 Layout.minimumWidth: 200
                 Layout.fillWidth: true
-                
-                graphA: historyGraph1Timestamps // adatsorok megadása szükséges!!!
-                graphB: historyGraph1Velocity
-                graphC: historyGraph1Acceleration
+
+                graphA: historyGraphAccelX // adatsorok megadása szükséges!!!
+                graphB: historyGraphAccelY
             }
         }
     }
