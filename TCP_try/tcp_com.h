@@ -1,37 +1,45 @@
-#ifndef TCP_COM_THREAD_H
-#define TCP_COM_THREAD_H
+#ifndef TCP_COM_H
+#define TCP_COM_H
 
 #include <QObject>
-#include <QThread>
 #include <QQueue>
 #include <QString>
 #include <QTcpSocket>
+#include <QAbstractSocket>
+#include <QThread>
 //#include <QDebug>
 #include <QByteArray>
-class TCP_com_thread : public QThread
+#include "message_handler.h"
+#include "quadro_msg.h"
+
+
+class TCP_com : public QThread
 {
+    Q_OBJECT
 public:
-    TCP_com_thread();
+    explicit TCP_com(QObject *parent = 0);
     void setPort(int port);
     void setServer(QString server);
-    void run();
-    bool connect();
+
+    bool connect_to();
     bool disconnect();
+
     int status();
-    void notEmpty();
+
     void send_msg(QString msg);
     QByteArray receive();
 signals:
-    void msg_in_the_box();
+
+    void send(QString command);
 private:
     QString Server;
     int port;
     QTcpSocket * socket;
-    QQueue<QString> Out_buffer;
-    QQueue<QByteArray> In_buffer;
+    Message_Handler * MSG_parser;
 
 public slots:
+    void readyRead();
 
 };
 
-#endif // TCP_COM_THREAD_H
+#endif // TCP_COM_H

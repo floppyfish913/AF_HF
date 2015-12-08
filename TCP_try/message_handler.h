@@ -2,19 +2,23 @@
 #define MESSAGE_HANDLER_H
 
 #include <QObject>
-#include "tcp_com_thread.h"
-class Message_Handler : public QThread
+#include "quadro_msg.h"
+class Message_Handler : public QObject
 {
 public:
-    Message_Handler(TCP_com_thread * com_thread);
-    void send(QString msg_to_send);
+    Message_Handler();
     void run();
+    void parser(QByteArray data);
+    void handler();
+    bool SetPID(int Kp,int Kd,int Ki);
+    bool GetPID();
+    bool SetMainPower(bool Status);
+    bool GetState();
 private:
-    TCP_com_thread * com_thread;
-    QByteArray msg;
-signals:
+    Quadro_msg msg;
 public slots:
-    void listen();
+    void received( QByteArray data);
+    void HELLO();
 };
 
 #endif // MESSAGE_HANDLER_H

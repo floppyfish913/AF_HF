@@ -8,10 +8,12 @@ CONFIG -= app_bundle
 TEMPLATE = app
 
 SOURCES += main.cpp \
-    tcp_com_thread.cpp \
-    message_handler.cpp
+    message_handler.cpp \
+    quadro_msg.cpp \
+    tcp_com.cpp
 
 HEADERS += \
-    tcp_com_thread.h \
-    message_handler.h
+    message_handler.h \
+    quadro_msg.h \
+    tcp_com.h
 
