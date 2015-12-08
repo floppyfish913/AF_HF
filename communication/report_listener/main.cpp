@@ -47,10 +47,10 @@ int main(int argc, char** argv)
         {
             printf("Received - %s\n",str);
         }
-        else
+       /* else
         {
             printf("Disconnection!!!");
-        }
+        }*/
         //write(comm_fd, str, strlen(str)+1);
 
     }

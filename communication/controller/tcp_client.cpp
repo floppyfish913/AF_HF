@@ -26,7 +26,7 @@ int main(int argc, char** argv)
         stream = connector->connect(argv[2], atoi(argv[1])); //write an IP address in the lace oif argv[2]
         if (stream) {
             message.clear();
-            message = "{\"MessageType\":\"GetPID\" } ";
+            message = "{\"MessageType\": \"SetMainPower\",\"MainPowerOn\": \"false\"}";
             stream->send(message.c_str(), message.size());
             printf("sent - %s\n", message.c_str());
             len = stream->receive(line, sizeof(line));
