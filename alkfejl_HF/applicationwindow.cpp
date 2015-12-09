@@ -59,7 +59,8 @@ void ApplicationWindow::SetPIDCommand()
 
 void ApplicationWindow::RefreshPIDCommand()
 {
-    // ide jön majd a JSON string küldése!
+    QString msg = "{\"MessageType\":\"GetPID\",\"Kp\":4,\"Ki\":12,\"Kd\":44}";
+    emit TCP_send(msg);
 }
 
 void ApplicationWindow::StateChanged()
@@ -69,7 +70,6 @@ void ApplicationWindow::StateChanged()
     QString qka2 = "158.15";
     qmlContext.setContextProperty(QStringLiteral("kalmanAngle"), QVariant::fromValue(qka));
     qmlContext.setContextProperty(QStringLiteral("kalmanOffset"), QVariant::fromValue(qka));
-    qmlContext.setContextProperty(QStringLiteral("batteryState"), QVariant::fromValue(qka2));
     qmlContext.setContextProperty(QStringLiteral("kalmanXState"), QVariant::fromValue(qka2));
     qmlContext.setContextProperty(QStringLiteral("kalmanYState"), QVariant::fromValue(qka2));
     qmlContext.setContextProperty(QStringLiteral("heightState"), QVariant::fromValue(qka2));
@@ -116,7 +116,7 @@ QQuickItem* ApplicationWindow::findItemByName(QList<QObject*> nodes, const QStri
         {
             return dynamic_cast<QQuickItem*>(nodes.at(i));
         }
-        // Gyerekekben keresés
+        // Gyerek elemekben keresés
         else if (nodes.at(i) && nodes.at(i)->children().size() > 0)
         {
             QQuickItem* item = findItemByName(nodes.at(i)->children(), name);
@@ -146,7 +146,7 @@ void ApplicationWindow::connectQmlSignals(QObject *rootObject)
     }
     else
     {
-        qDebug() << "HIBA: Nem találom a historyGraphGyr objektumot a QML környezetben.";
+        qDebug() << "HIBA: Nem találom a historyGraphAcc objektumot a QML környezetben.";
     }
     if (historyGraphAngle)
     {
@@ -154,14 +154,20 @@ void ApplicationWindow::connectQmlSignals(QObject *rootObject)
     }
     else
     {
-        qDebug() << "HIBA: Nem találom a historyGraphGyr objektumot a QML környezetben.";
+        qDebug() << "HIBA: Nem találom a historyGraphAngle objektumot a QML környezetben.";
     }
 }
 
 void ApplicationWindow::GetState(Quadro_msg msg){
-    qDebug()<< "Motorstate0 : " << QString::number(msg.MotorState0) << endl;
+    // qDebug()<< "Motorstate0 : " << QString::number(msg.MotorState0) << endl;
     qmlContext.setContextProperty(QStringLiteral("motor1State"), QVariant::fromValue(QString::number(msg.MotorState0)));
+    qmlContext.setContextProperty(QStringLiteral("motor2State"), QVariant::fromValue(QString::number(msg.MotorState1)));
+    qmlContext.setContextProperty(QStringLiteral("motor3State"), QVariant::fromValue(QString::number(msg.MotorState2)));
+    qmlContext.setContextProperty(QStringLiteral("motor4State"), QVariant::fromValue(QString::number(msg.MotorState3)));
     qmlContext.setContextProperty(QStringLiteral("kalmanAngle"), QVariant::fromValue(msg.KalmanX));
     qmlContext.setContextProperty(QStringLiteral("kalmanOffset"), QVariant::fromValue(msg.KalmanY));
+    qmlContext.setContextProperty(QStringLiteral("kalmanXState"), QVariant::fromValue(QString::number(msg.KalmanX)));
+    qmlContext.setContextProperty(QStringLiteral("kalmanYState"), QVariant::fromValue(QString::number(msg.KalmanY)));
+    qmlContext.setContextProperty(QStringLiteral("heightState"), QVariant::fromValue(QString::number(msg.Altitude)));
 
 }
