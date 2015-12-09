@@ -26,7 +26,7 @@ bool TCP_com::disconnect(){
     return true;
 }
 
-void TCP_com::send_msg(QString msg){
+void TCP_com::send(QString msg){
     socket->write(msg.toLocal8Bit());
     socket->flush();
     socket->waitForBytesWritten(3000);
@@ -39,10 +39,37 @@ void TCP_com::setServer(QString server){
     this->Server = server;
 
 }
+void TCP_com::handler(Quadro_msg &msg){
+
+    //caling GUI functions
+
+   // msg.out();
+    switch(msg.MessageType){
+        case 1: //GetState MSG
+
+            emit Get_State_received(msg);
+            break;
+        case 2: //GetPID
+
+            emit Get_PID_received(msg);
+            break;
+        case 3: //SetPID
+
+            emit Set_PID_received(msg);
+            break;
+        case 4: //SetMainPower
+
+            emit Set_Main_Power_received(msg);
+        break;
+    }
+    msg.clear();
+}
+
+
 void TCP_com::readyRead(){
-    QTextStream(stdout) << "MSG! >>>>>>>>>"<<endl;
+    //QTextStream(stdout) << "MSG! >>>>>>>>>"<<endl;
     QByteArray data = socket->readAll();
     MSG_parser->parser(data);
-    MSG_parser->handler();
+    handler(MSG_parser->msg);
 
 }

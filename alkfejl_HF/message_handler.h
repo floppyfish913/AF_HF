@@ -10,7 +10,6 @@ public:
     explicit Message_Handler(QObject * parent = 0);
     void parser(QByteArray data);
     void handler();
-private:
     Quadro_msg msg;
 
 signals:

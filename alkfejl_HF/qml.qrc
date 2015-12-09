@@ -1,0 +1,12 @@
+<RCC>
+    <qresource prefix="/qml">
+        <file>main.qml</file>
+        <file>MainForm.qml</file>
+        <file>HistoryGraph.qml</file>
+    </qresource>
+    <qresource prefix="/pics">
+        <file>raise.png</file>
+        <file>rot.png</file>
+        <file>frame.png</file>
+    </qresource>
+</RCC>
