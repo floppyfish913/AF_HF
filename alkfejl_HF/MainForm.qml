@@ -112,8 +112,7 @@ Item {
             anchors.top: parent.top
             source: "/pics/rot.png"
             anchors.fill: parent
-            transform:  Rotation { angle: kalmanAngle; origin.x: rot.width/2; origin.y: rot.height/2  }
-                        Translate { y: kalmanOffset }
+            transform: Rotation { angle: kalmanAngle; origin.x: rot.width/2; origin.y: rot.height/2 }
         }
         Image {
             id: frame
@@ -135,18 +134,11 @@ Item {
         anchors.rightMargin: 0
         anchors.topMargin: 0
 
-        // Oszlopba rendezés
-        ColumnLayout {
-            id: columnLayout1
-            anchors.left: parent.left
-            anchors.right: parent.right
-            anchors.top: parent.top
-            anchors.bottom: parent.bottom
-            anchors.bottomMargin: 0          
             // A bekapcsoló gomb Toggle Button, vagyis benyomva marad bekapcsolás után.
             // Az állapotától függ a felirata, a színe és a klikkelésre történő változás is.
-            Rectangle {
-                height: 25
+        Rectangle {
+            height: 25
+            anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.leftMargin: 24
@@ -168,7 +160,7 @@ Item {
                             powerSwitch()
                         }
                     }
-                    state: "off"
+                    state: "on"
                     states: [
                         State {
                             name: "on";
@@ -181,26 +173,10 @@ Item {
                             PropertyChanges { target: btnText; text: "Power Off";}
                         }
                     ]
-                    Text { id: btnText; text: "Power Off"; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; anchors.verticalCenter: parent.verticalCenter; anchors.horizontalCenter: parent.horizontalCenter; anchors.top: parent.top; }
-                    MouseArea { id: region; anchors.fill: parent; onReleased: (container.state == "off") ? container.toggle() : powerOffDialog.open() }
+                    Text { id: btnText; text: "Power Off"; anchors.left: parent.left; anchors.leftMargin: 0; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; anchors.verticalCenter: parent.verticalCenter; anchors.horizontalCenter: parent.horizontalCenter; anchors.top: parent.top; }
+                    MouseArea { id: region; anchors.verticalCenter: parent.verticalCenter; anchors.top: parent.top; anchors.right: parent.right; anchors.left: parent.left; onReleased: (container.state == "off") ? container.toggle() : powerOffDialog.open() }
                 }
-            }
-            // A tápfesz kiírása
-            Text {
-                id: battery
-                width: 160
-                anchors.left: parent.left
-                anchors.bottom: parent.bottom
-                anchors.leftMargin: 15                
-                anchors.bottomMargin: 0
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: "Battery: " + batteryState.toString() + " V "
-                horizontalAlignment: Text.AlignHCenter
-                verticalAlignment: Text.AlignVCenter
-                font.bold: true
-                font.pointSize: 11
-            }
-        }
+            }          
     }
 
     // A PID parancsai
@@ -448,9 +424,10 @@ Item {
             anchors.left: parent.left
             anchors.leftMargin: 10
             anchors.verticalCenter: parent.verticalCenter
-            spacing: 30
+            spacing: 10
             Text {
                 text: " Height: " + heightState + " m"
+                anchors.leftMargin: 10
                 anchors.right: parent.right
                 anchors.left: parent.left
                 anchors.top: parent.top
@@ -459,9 +436,9 @@ Item {
                 font.pointSize: 12
             }
             Text {
-                text: " Motor 1 Performance: " + (motor1State) + " %"
+                text: " Motor 1 Performance: " + (motor1State/40.95).toFixed(2) + " %"
                 anchors.left: parent.left
-                anchors.leftMargin: 0
+                anchors.leftMargin: 10
                 anchors.right: parent.right
                 anchors.rightMargin: 0
                 horizontalAlignment: Text.AlignHCenter
@@ -469,9 +446,9 @@ Item {
                 font.pointSize: 12
             }
             Text {
-                text: " Motor 2 Performance: " + motor2State + " %"
+                text: " Motor 2 Performance: " + (motor2State/40.95).toFixed(2) + " %"
                 anchors.left: parent.left
-                anchors.leftMargin: 0
+                anchors.leftMargin: 10
                 anchors.right: parent.right
                 anchors.rightMargin: 0
                 horizontalAlignment: Text.AlignHCenter
@@ -479,9 +456,9 @@ Item {
                 font.pointSize: 12
             }
             Text {
-                text: " Motor 3 Performance: " + motor3State + " %"
+                text: " Motor 3 Performance: " + (motor3State/40.95).toFixed(2) + " %"
                 anchors.left: parent.left
-                anchors.leftMargin: 0
+                anchors.leftMargin: 10
                 anchors.right: parent.right
                 anchors.rightMargin: 0
                 horizontalAlignment: Text.AlignHCenter
@@ -489,9 +466,9 @@ Item {
                 font.pointSize: 12
             }
             Text {
-                text: " Motor 4 Performance: " + motor4State + " %"
+                text: " Motor 4 Performance: " + (motor4State/40.95).toFixed(2) + " %"
                 anchors.left: parent.left
-                anchors.leftMargin: 0
+                anchors.leftMargin: 10
                 anchors.right: parent.right
                 anchors.rightMargin: 0
                 horizontalAlignment: Text.AlignHCenter
@@ -504,16 +481,16 @@ Item {
     // Grafikonok megjelenítése
     GroupBox {
         id: graphic
-        anchors.rightMargin: 0
-        anchors.leftMargin: 0
+        anchors.top: pidCommands.bottom
+        anchors.topMargin: 10
         anchors.bottom: parent.bottom
         anchors.bottomMargin: 0
+        anchors.rightMargin: 0
+        anchors.leftMargin: 0
         anchors.left: angoffset.right
         anchors.right: parent.right
-        anchors.top: heightMotorParameters.bottom
-        anchors.topMargin: 0
 
-            ColumnLayout {
+        ColumnLayout {
                 id: graphsMainColumn
                 anchors.bottom: parent.bottom
                 anchors.bottomMargin: 0
@@ -566,9 +543,9 @@ Item {
                 ColumnLayout {
                     id: graphsLower
                     anchors.right: parent.right
-                    anchors.rightMargin: 200
+                    anchors.rightMargin: 0
                     anchors.left: parent.left
-                    anchors.leftMargin: 200
+                    anchors.leftMargin: 0
                     HistoryGraph {
                         id: historyGraphAcc
                         width: 315
@@ -582,7 +559,7 @@ Item {
                         graphA: AccXGraphs
                         graphB: AccYGraphs
                     }
-                        Text{ text: "Acceleration" ; font.bold: true; font.pointSize: 10;anchors.horizontalCenter: parent.horizontalCenter}
+                        Text{ text: "Acceleration" ; anchors.top: historyGraphAcc.bottom; anchors.topMargin: 5; font.bold: true; font.pointSize: 10;anchors.horizontalCenter: parent.horizontalCenter}
                 }
             }
     }
