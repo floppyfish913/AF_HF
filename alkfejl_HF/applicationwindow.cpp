@@ -1,7 +1,9 @@
 #include <QQmlProperty>
 #include <QQmlContext>
-#include "applicationwindow.h"
+#include "ApplicationWindow.h"
 #include "quadro_msg.h"
+
+/** Konstruktor alapján létrehozva és átadva a szükséges paraméterek */
 
 ApplicationWindow::ApplicationWindow(QObject *rootObject, QQmlContext& qmlContext)
     : QObject(nullptr), qmlContext(qmlContext)
@@ -18,6 +20,8 @@ ApplicationWindow::ApplicationWindow(QObject *rootObject, QQmlContext& qmlContex
         qDebug() << "Nem találom a ApplicationWindow objektumot.";
     }
 
+    /** QML oldali jelek csatlakoztatása signal-slot rendszerben */
+
     qDebug() << "QML signal csatlakoztatása";
     QObject::connect(mainWindowObject, SIGNAL(powerSwitchCpp()),
         this, SLOT(PowerSwitchCommand()));
@@ -27,9 +31,18 @@ ApplicationWindow::ApplicationWindow(QObject *rootObject, QQmlContext& qmlContex
         this, SLOT(RefreshPIDCommand()));
     QObject::connect(mainWindowObject, SIGNAL(sendIPCpp()),
         this, SLOT(SendIPCommand()));
-
+    QObject::connect(mainWindowObject, SIGNAL(connection_failCpp()),
+        this, SLOT(connection_failCommand()));
     qDebug() << "ApplicationWindow inicializálva.";
 }
+
+/** Az egyes signalokhoz tartozó parancsok általában
+ * egy üzenetet kell, hogy összerakjanak, melyet
+ * JSON Stringként kap meg az eszköz, amelyet aztán majd értelmez.
+ * FindChild metódussal találjuk meg a mainWindowObejcten belül a keresett objektumot,
+ * melynek valamely beállítását változtatjuk, hogy legyen jele az esemény megtörténtének
+ * a GUI-n is. A TCP_send kibocsátásával küldjük el az üzenetet.
+ */
 
 void ApplicationWindow::PowerSwitchCommand()
 {
@@ -61,40 +74,29 @@ void ApplicationWindow::SetPIDCommand()
 
 void ApplicationWindow::RefreshPIDCommand()
 {
-    QString msg = "{\"MessageType\":\"GetPID\",\"Kp\":4,\"Ki\":12,\"Kd\":44}";
+    QString msg = "{\"MessageType\":\"GetPID\"}";
     emit TCP_send(msg);
 }
 
 void ApplicationWindow::SendIPCommand()
 {
     QObject * inputP = mainWindowObject->findChild<QObject*>("iptext");
-    // msg += inputP->property("text").toString();
+    QString ip = inputP->property("text").toString();
     inputP = mainWindowObject->findChild<QObject*>("porttext");
-    // msg += inputP->property("text").toString();
+    int port= inputP->property("text").toInt();
+    emit SendConnect(ip,port);
 }
 
-void ApplicationWindow::StateChanged()
-{
-    QString qka = "5.3";
-    qka.toFloat();
-    QString qka2 = "158.15";
-    qmlContext.setContextProperty(QStringLiteral("kalmanAngle"), QVariant::fromValue(qka));
-    qmlContext.setContextProperty(QStringLiteral("kalmanOffset"), QVariant::fromValue(qka));
-    qmlContext.setContextProperty(QStringLiteral("kalmanXState"), QVariant::fromValue(qka2));
-    qmlContext.setContextProperty(QStringLiteral("kalmanYState"), QVariant::fromValue(qka2));
-    qmlContext.setContextProperty(QStringLiteral("heightState"), QVariant::fromValue(qka2));
-    qmlContext.setContextProperty(QStringLiteral("motor1State"), QVariant::fromValue(qka2));
-    qmlContext.setContextProperty(QStringLiteral("motor2State"), QVariant::fromValue(qka2));
-    qmlContext.setContextProperty(QStringLiteral("motor3State"), QVariant::fromValue(qka2));
-    qmlContext.setContextProperty(QStringLiteral("motor4State"), QVariant::fromValue(qka2));
-    qmlContext.setContextProperty(QStringLiteral("AccXGraphs"), QVariant::fromValue(qka));
-    qmlContext.setContextProperty(QStringLiteral("AccYGraphs"), QVariant::fromValue(qka));
-    qmlContext.setContextProperty(QStringLiteral("GyroXGraphs"), QVariant::fromValue(qka));
-    qmlContext.setContextProperty(QStringLiteral("GyroYGraphs"), QVariant::fromValue(qka));
-    qmlContext.setContextProperty(QStringLiteral("GyroZGraphs"), QVariant::fromValue(qka));
-    qmlContext.setContextProperty(QStringLiteral("AngleXGraphs"), QVariant::fromValue(qka));
-    qmlContext.setContextProperty(QStringLiteral("AngleYGraphs"), QVariant::fromValue(qka));
-    emit ContextChanged();
+/** Itt az ablakok újranyitása történik helytelen IP-cím megadása után. */
+
+void ApplicationWindow::connection_failed(){
+    QObject * inputP = mainWindowObject->findChild<QObject*>("failedDialog");
+    inputP->setProperty("visible",QVariant::fromValue(true));
+}
+
+void ApplicationWindow::connection_failCommand(){
+    QObject * inputP = mainWindowObject->findChild<QObject*>("connectionDialog");
+    inputP->setProperty("visible",QVariant::fromValue(true));
 }
 
 QQuickItem* ApplicationWindow::findItemByName(const QString& name)
@@ -137,39 +139,13 @@ QQuickItem* ApplicationWindow::findItemByName(QList<QObject*> nodes, const QStri
     // Nem találtuk.
     return nullptr;
 }
-void ApplicationWindow::connectQmlSignals(QObject *rootObject)
-{
-    QQuickItem *historyGraphGyr = findItemByName(rootObject,QString("historyGraphGyr"));
-    QQuickItem *historyGraphAcc = findItemByName(rootObject,QString("historyGraphAcc"));
-    QQuickItem *historyGraphAngle = findItemByName(rootObject,QString("historyGraphAngle"));
-    if (historyGraphGyr)
-    {
-        QObject::connect(this, SIGNAL(historyContextUpdated()), historyGraphGyr, SLOT(requestPaint()));
-    }
-    else
-    {
-        qDebug() << "HIBA: Nem találom a historyGraphGyr objektumot a QML környezetben.";
-    }
-    if (historyGraphAcc)
-    {
-        QObject::connect(this, SIGNAL(historyContextUpdated()), historyGraphAcc, SLOT(requestPaint()));
-    }
-    else
-    {
-        qDebug() << "HIBA: Nem találom a historyGraphAcc objektumot a QML környezetben.";
-    }
-    if (historyGraphAngle)
-    {
-        QObject::connect(this, SIGNAL(historyContextUpdated()), historyGraphAngle, SLOT(requestPaint()));
-    }
-    else
-    {
-        qDebug() << "HIBA: Nem találom a historyGraphAngle objektumot a QML környezetben.";
-    }
-}
+
+/** A visszakapott üzenetet , amely szintén egy JSON String, szétbontja a message_handler
+ * így egyesével tudjuk csatlakoztatni a setContextProperty függvénnyel a QML oldali változókhoz.
+ * A változókat ez a függvény jegyzi be QML oldalon is.
+ */
 
 void ApplicationWindow::GetState(Quadro_msg msg){
-    // qDebug()<< "Motorstate0 : " << QString::number(msg.MotorState0) << endl;
     qmlContext.setContextProperty(QStringLiteral("motor1State"), QVariant::fromValue(QString::number(msg.MotorState0)));
     qmlContext.setContextProperty(QStringLiteral("motor2State"), QVariant::fromValue(QString::number(msg.MotorState1)));
     qmlContext.setContextProperty(QStringLiteral("motor3State"), QVariant::fromValue(QString::number(msg.MotorState2)));
@@ -180,4 +156,20 @@ void ApplicationWindow::GetState(Quadro_msg msg){
     qmlContext.setContextProperty(QStringLiteral("kalmanYState"), QVariant::fromValue(QString::number(msg.KalmanY)));
     qmlContext.setContextProperty(QStringLiteral("heightState"), QVariant::fromValue(QString::number(msg.Altitude)));
 
+}
+
+/** PID paraméterek lekérdezése után szeretnénk, ha
+ * a kiolvasott értékek megjelennének a GUI-n, ezért
+ * a paraméterek beállítására szolgáló TextField-ekbe
+ * beleírjuk azokat.
+ */
+
+void ApplicationWindow::GetPID(Quadro_msg msg)
+{
+     QObject * inputP = mainWindowObject->findChild<QObject*>("textInputP");
+    inputP->setProperty("text",QVariant::fromValue(QString::number(msg.Kp)));
+    inputP = mainWindowObject->findChild<QObject*>("textInputI");
+    inputP->setProperty("text",QVariant::fromValue(QString::number(msg.Ki)));
+    inputP = mainWindowObject->findChild<QObject*>("textInputD");
+    inputP->setProperty("text",QVariant::fromValue(QString::number(msg.Kd)));
 }
