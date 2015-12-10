@@ -92,18 +92,25 @@ Item {
         anchors.topMargin: 0
         anchors.top: parent.top
         anchors.left: parent.left
-        Image {
-            id: raise
-            anchors.left: parent.left
-            anchors.top: parent.top
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            source: "/pics/raise.png"
+        RowLayout {
+            id: rotation
             anchors.fill: parent
             transform: Rotation {
-                origin.x: raise.width/2
-                origin.y: raise.height/2
-                angle: kalmanAngle
+                            origin.x: rotation.width/2
+                            origin.y: rotation.height/2
+                            angle: kalmanAngle
+            }
+            Image {
+                id: raise
+                anchors.left: parent.left
+                anchors.top: parent.top
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.verticalCenter: parent.verticalCenter
+                source: "/pics/raise.png"
+                anchors.fill: parent
+                transform: Translate {
+                    y: kalmanOffset
+                }
             }
         }
         Image {
