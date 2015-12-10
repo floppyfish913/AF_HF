@@ -19,6 +19,7 @@ public slots:
     void PowerSwitchCommand();
     void SetPIDCommand();
     void RefreshPIDCommand();
+    void SendIPCommand();
     void StateChanged();
     //tcp slots
     void GetState(Quadro_msg msg);
