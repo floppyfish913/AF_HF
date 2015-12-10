@@ -1,6 +1,6 @@
 #include <QQmlProperty>
 #include <QQmlContext>
-#include "ApplicationWindow.h"
+#include "applicationwindow.h"
 #include "quadro_msg.h"
 
 ApplicationWindow::ApplicationWindow(QObject *rootObject, QQmlContext& qmlContext)

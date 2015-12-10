@@ -12,22 +12,43 @@
 #include "message_handler.h"
 #include "quadro_msg.h"
 
+/**
+ * @brief Üzenet feldolgozó .
+ * 
+ * Kommunikációs csatorna 
+ * Adatokat feldolgozása Quadro_msg objektumba
+ * A jelek bekötésével kommuniál a GUI-val
+ */
 
 class TCP_com : public QThread
 {
     Q_OBJECT
 public:
+/**
+*Konstruktor
+*/
     explicit TCP_com(QObject *parent = 0);
+/**
+* TCP kapcsolat portjának beállítója
+*/
     void setPort(int port);
+/**
+* TCP kapcsolat IP portjának beállítója
+*/
     void setServer(QString server);
-
+/**
+* TCP kapcsolódás
+*/
     bool connect_to();
+/**
+* TCP lekapcsolódás
+*/
     bool disconnect();
+/**
+* üzenetkezelő
+* üzenetekhez megfelelő eventeket generál
+*/
     void handler(Quadro_msg &msg);
-    int status();
-
-    void send_msg(QString msg);
-    QByteArray receive();
 
 private:
     QString Server;
@@ -35,10 +56,10 @@ private:
     QTcpSocket * socket;
     Message_Handler * MSG_parser;
 signals:
-    Get_State_received(Quadro_msg msg);
-    Get_PID_received(Quadro_msg msg);
-    Set_PID_received(Quadro_msg msg);
-    Set_Main_Power_received(Quadro_msg msg);
+    void Get_State_received(Quadro_msg msg);
+    void Get_PID_received(Quadro_msg msg);
+    void Set_PID_received(Quadro_msg msg);
+    void Set_Main_Power_received(Quadro_msg msg);
 public slots:
     void readyRead();
     void send(QString command);

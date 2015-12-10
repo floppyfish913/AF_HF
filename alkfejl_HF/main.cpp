@@ -1,6 +1,6 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "ApplicationWindow.h"
+#include "applicationwindow.h"
 #include "tcp_com.h"
 int main(int argc, char *argv[])
 {

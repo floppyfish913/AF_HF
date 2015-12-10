@@ -1,5 +1,11 @@
 #include "tcp_com.h"
 
+
+/**
+*Konstruktor
+*Message handler és socket létrehozása
+*Socket és a kommunikációs csatorna összekötése
+*/
 TCP_com::TCP_com(QObject *parent) : QThread(parent)
 {
     socket = new QTcpSocket(this);
@@ -8,13 +14,18 @@ TCP_com::TCP_com(QObject *parent) : QThread(parent)
     connect(socket,SIGNAL(readyRead()),this,SLOT(readyRead()));
 
 }
-
+/**
+* Kapcsolódás a szerverhez
+*/
 bool TCP_com::connect_to(){
     socket->connectToHost(Server,port);
     socket->waitForConnected();
     return true;
 }
 
+/**
+* Kapcsolat lezárása
+*/
 bool TCP_com::disconnect(){
 
     if (socket->state() == QAbstractSocket::ConnectedState){
@@ -26,11 +37,18 @@ bool TCP_com::disconnect(){
     return true;
 }
 
+/**
+* Adatok küldése a socketen keresztül
+*/
+
 void TCP_com::send(QString msg){
     socket->write(msg.toLocal8Bit());
     socket->flush();
     socket->waitForBytesWritten(3000);
 }
+/**
+* Kapcsolatadatok beállítása
+*/
 void TCP_com::setPort(int port){
     this->port = port;
 }
@@ -39,6 +57,7 @@ void TCP_com::setServer(QString server){
     this->Server = server;
 
 }
+
 void TCP_com::handler(Quadro_msg &msg){
 
     //caling GUI functions

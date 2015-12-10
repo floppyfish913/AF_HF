@@ -5,6 +5,15 @@
 #include <QString>
 #include <QTextStream>
 
+/**
+ * @brief A robot szimulátor üzenet .
+ * 
+ * Tartalmazza az összes mezőt, ami az üzenetekben található.
+ * A továbbiakban a beérkezett JSON formátumú üzeneteket a parser egy ilyen objektumba írja
+ * Valamint a GUI és a kommunikációs réteg között az adatok cseréje "ezzel történik"
+ */
+
+
 class Quadro_msg : public QObject
 {
     Q_OBJECT

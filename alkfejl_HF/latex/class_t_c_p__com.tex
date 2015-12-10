@@ -1,0 +1,130 @@
+\section{T\-C\-P\-\_\-com Class Reference}
+\label{class_t_c_p__com}\index{T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}}
+
+
+Üzenet feldolgozó .  
+
+
+
+
+{\ttfamily \#include $<$tcp\-\_\-com.\-h$>$}
+
+Inheritance diagram for T\-C\-P\-\_\-com\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_t_c_p__com}
+\end{center}
+\end{figure}
+\subsection*{Public Slots}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries ready\-Read} ()\label{class_t_c_p__com_a4f8efa4eb88ec28e773925ec91802179}
+
+\item 
+void {\bf send} (Q\-String command)
+\end{DoxyCompactItemize}
+\subsection*{Signals}
+\begin{DoxyCompactItemize}
+\item 
+void {\bfseries Get\-\_\-\-State\-\_\-received} ({\bf Quadro\-\_\-msg} msg)\label{class_t_c_p__com_a2864359bfb79b0a98a14b6e0bfb3e762}
+
+\item 
+void {\bfseries Get\-\_\-\-P\-I\-D\-\_\-received} ({\bf Quadro\-\_\-msg} msg)\label{class_t_c_p__com_a20a0efd499ac4a97bebeeab5f0dc6d77}
+
+\item 
+void {\bfseries Set\-\_\-\-P\-I\-D\-\_\-received} ({\bf Quadro\-\_\-msg} msg)\label{class_t_c_p__com_a0d4aae92cfde9026c687605769aa269e}
+
+\item 
+void {\bfseries Set\-\_\-\-Main\-\_\-\-Power\-\_\-received} ({\bf Quadro\-\_\-msg} msg)\label{class_t_c_p__com_a84d13843639703a78ac0c3b2f58c6a3c}
+
+\end{DoxyCompactItemize}
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+{\bf T\-C\-P\-\_\-com} (Q\-Object $\ast$parent=0)
+\item 
+void {\bf set\-Port} (int port)
+\item 
+void {\bf set\-Server} (Q\-String server)
+\item 
+bool {\bf connect\-\_\-to} ()
+\item 
+bool {\bf disconnect} ()
+\item 
+void {\bf handler} ({\bf Quadro\-\_\-msg} \&msg)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Üzenet feldolgozó . 
+
+Kommunikációs csatorna Adatokat feldolgozása \doxyref{Quadro\-\_\-msg}{p.}{class_quadro__msg} objektumba A jelek bekötésével kommuniál a G\-U\-I-\/val 
+
+\subsection{Constructor \& Destructor Documentation}
+\index{T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}!T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}}
+\index{T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}!TCP_com@{T\-C\-P\-\_\-com}}
+\subsubsection[{T\-C\-P\-\_\-com}]{\setlength{\rightskip}{0pt plus 5cm}T\-C\-P\-\_\-com\-::\-T\-C\-P\-\_\-com (
+\begin{DoxyParamCaption}
+\item[{Q\-Object $\ast$}]{parent = {\ttfamily 0}}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [explicit]}}\label{class_t_c_p__com_a94ce52fa51ee1ed6082b026702907318}
+Konstruktor
+
+Konstruktor Message handler és socket létrehozása Socket és a kommunikációs csatorna összekötése 
+
+\subsection{Member Function Documentation}
+\index{T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}!connect\-\_\-to@{connect\-\_\-to}}
+\index{connect\-\_\-to@{connect\-\_\-to}!TCP_com@{T\-C\-P\-\_\-com}}
+\subsubsection[{connect\-\_\-to}]{\setlength{\rightskip}{0pt plus 5cm}bool T\-C\-P\-\_\-com\-::connect\-\_\-to (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_t_c_p__com_aa7a22ac0a393e808da8c4540d44819c4}
+T\-C\-P kapcsolódás
+
+Kapcsolódás a szerverhez \index{T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!TCP_com@{T\-C\-P\-\_\-com}}
+\subsubsection[{disconnect}]{\setlength{\rightskip}{0pt plus 5cm}bool T\-C\-P\-\_\-com\-::disconnect (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}\label{class_t_c_p__com_ab20ceaf9f60538bbaec5b6e1f4ba322c}
+T\-C\-P lekapcsolódás
+
+Kapcsolat lezárása \index{T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}!handler@{handler}}
+\index{handler@{handler}!TCP_com@{T\-C\-P\-\_\-com}}
+\subsubsection[{handler}]{\setlength{\rightskip}{0pt plus 5cm}void T\-C\-P\-\_\-com\-::handler (
+\begin{DoxyParamCaption}
+\item[{{\bf Quadro\-\_\-msg} \&}]{msg}
+\end{DoxyParamCaption}
+)}\label{class_t_c_p__com_a25497b75e14d2fe6348719aa68d980a5}
+üzenetkezelő üzenetekhez megfelelő eventeket generál \index{T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}!send@{send}}
+\index{send@{send}!TCP_com@{T\-C\-P\-\_\-com}}
+\subsubsection[{send}]{\setlength{\rightskip}{0pt plus 5cm}void T\-C\-P\-\_\-com\-::send (
+\begin{DoxyParamCaption}
+\item[{Q\-String}]{msg}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily [slot]}}\label{class_t_c_p__com_a2a9af6db5e80f2fb6149341f68918e52}
+Adatok küldése a socketen keresztül \index{T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}!set\-Port@{set\-Port}}
+\index{set\-Port@{set\-Port}!TCP_com@{T\-C\-P\-\_\-com}}
+\subsubsection[{set\-Port}]{\setlength{\rightskip}{0pt plus 5cm}void T\-C\-P\-\_\-com\-::set\-Port (
+\begin{DoxyParamCaption}
+\item[{int}]{port}
+\end{DoxyParamCaption}
+)}\label{class_t_c_p__com_a1fe6cd7ce4b72dc94ad3e24eeb975a9b}
+T\-C\-P kapcsolat portjának beállítója
+
+Kapcsolatadatok beállítása \index{T\-C\-P\-\_\-com@{T\-C\-P\-\_\-com}!set\-Server@{set\-Server}}
+\index{set\-Server@{set\-Server}!TCP_com@{T\-C\-P\-\_\-com}}
+\subsubsection[{set\-Server}]{\setlength{\rightskip}{0pt plus 5cm}void T\-C\-P\-\_\-com\-::set\-Server (
+\begin{DoxyParamCaption}
+\item[{Q\-String}]{server}
+\end{DoxyParamCaption}
+)}\label{class_t_c_p__com_a90e32a4de339b91ce83117fd22bce10e}
+T\-C\-P kapcsolat I\-P portjának beállítója 
+
+The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+tcp\-\_\-com.\-h\item 
+moc\-\_\-tcp\-\_\-com.\-cpp\item 
+tcp\-\_\-com.\-cpp\end{DoxyCompactItemize}

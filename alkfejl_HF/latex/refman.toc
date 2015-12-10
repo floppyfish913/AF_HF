@@ -1,0 +1,28 @@
+\contentsline {chapter}{\numberline {1}Hierarchical Index}{1}
+\contentsline {section}{\numberline {1.1}Class Hierarchy}{1}
+\contentsline {chapter}{\numberline {2}Class Index}{3}
+\contentsline {section}{\numberline {2.1}Class List}{3}
+\contentsline {chapter}{\numberline {3}Class Documentation}{5}
+\contentsline {section}{\numberline {3.1}Application\discretionary {-}{}{}Window Class Reference}{5}
+\contentsline {section}{\numberline {3.2}Message\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Handler Class Reference}{6}
+\contentsline {subsection}{\numberline {3.2.1}Constructor \& Destructor Documentation}{6}
+\contentsline {subsubsection}{\numberline {3.2.1.1}Message\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Handler}{6}
+\contentsline {subsection}{\numberline {3.2.2}Member Function Documentation}{6}
+\contentsline {subsubsection}{\numberline {3.2.2.1}parser}{6}
+\contentsline {section}{\numberline {3.3}qt\discretionary {-}{}{}\_\discretionary {-}{}{}meta\discretionary {-}{}{}\_\discretionary {-}{}{}stringdata\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Application\discretionary {-}{}{}Window\discretionary {-}{}{}\_\discretionary {-}{}{}t Struct Reference}{6}
+\contentsline {section}{\numberline {3.4}qt\discretionary {-}{}{}\_\discretionary {-}{}{}meta\discretionary {-}{}{}\_\discretionary {-}{}{}stringdata\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Message\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Handler\discretionary {-}{}{}\_\discretionary {-}{}{}t Struct Reference}{7}
+\contentsline {section}{\numberline {3.5}qt\discretionary {-}{}{}\_\discretionary {-}{}{}meta\discretionary {-}{}{}\_\discretionary {-}{}{}stringdata\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}Quadro\discretionary {-}{}{}\_\discretionary {-}{}{}msg\discretionary {-}{}{}\_\discretionary {-}{}{}t Struct Reference}{7}
+\contentsline {section}{\numberline {3.6}qt\discretionary {-}{}{}\_\discretionary {-}{}{}meta\discretionary {-}{}{}\_\discretionary {-}{}{}stringdata\discretionary {-}{}{}\_\discretionary {-}{}{}\discretionary {-}{}{}T\discretionary {-}{}{}C\discretionary {-}{}{}P\discretionary {-}{}{}\_\discretionary {-}{}{}com\discretionary {-}{}{}\_\discretionary {-}{}{}t Struct Reference}{7}
+\contentsline {section}{\numberline {3.7}Quadro\discretionary {-}{}{}\_\discretionary {-}{}{}msg Class Reference}{7}
+\contentsline {subsection}{\numberline {3.7.1}Detailed Description}{8}
+\contentsline {section}{\numberline {3.8}T\discretionary {-}{}{}C\discretionary {-}{}{}P\discretionary {-}{}{}\_\discretionary {-}{}{}com Class Reference}{8}
+\contentsline {subsection}{\numberline {3.8.1}Detailed Description}{9}
+\contentsline {subsection}{\numberline {3.8.2}Constructor \& Destructor Documentation}{9}
+\contentsline {subsubsection}{\numberline {3.8.2.1}T\discretionary {-}{}{}C\discretionary {-}{}{}P\discretionary {-}{}{}\_\discretionary {-}{}{}com}{9}
+\contentsline {subsection}{\numberline {3.8.3}Member Function Documentation}{9}
+\contentsline {subsubsection}{\numberline {3.8.3.1}connect\discretionary {-}{}{}\_\discretionary {-}{}{}to}{9}
+\contentsline {subsubsection}{\numberline {3.8.3.2}disconnect}{9}
+\contentsline {subsubsection}{\numberline {3.8.3.3}handler}{9}
+\contentsline {subsubsection}{\numberline {3.8.3.4}send}{9}
+\contentsline {subsubsection}{\numberline {3.8.3.5}set\discretionary {-}{}{}Port}{10}
+\contentsline {subsubsection}{\numberline {3.8.3.6}set\discretionary {-}{}{}Server}{10}

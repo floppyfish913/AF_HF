@@ -1,13 +1,21 @@
 #include "message_handler.h"
 
 
+/**
+ *Konstruktor 
+ */
+
 Message_Handler::Message_Handler(QObject * parent) : QObject(parent)
 {
-    connect(this,SIGNAL(Get_State_received(Quadro_msg)),this,SLOT(tester(Quadro_msg)));
-    connect(this,SIGNAL(Get_PID_received(Quadro_msg)),this,SLOT(tester(Quadro_msg)));
-    connect(this,SIGNAL(Set_Main_Power_received(Quadro_msg)),this,SLOT(tester(Quadro_msg)));
-    connect(this,SIGNAL(Set_PID_received(Quadro_msg)),this,SLOT(tester(Quadro_msg)));
+    msg.clear()
 }
+
+/**
+ * @brief Üzenet feldolgozó .
+ * 
+ * Bejövő JSON string-et alakítja Quadro_msg formáturmra
+ * A feldolgozott adatot Quadro_msg Objektumba írja
+ */
 
 void Message_Handler::parser(QByteArray data){
     QByteArray tmp;
@@ -243,45 +251,8 @@ void Message_Handler::parser(QByteArray data){
 
         }
 
-
-
-
-
-
-
     }
 
-
 }
 
-void Message_Handler::handler(){
 
-    //caling GUI functions
-
-    msg.out();
-    switch(msg.MessageType){
-        case 1: //GetState MSG
-
-            emit Get_State_received(msg);
-            break;
-        case 2: //GetPID
-
-            emit Get_PID_received(msg);
-            break;
-        case 3: //SetPID
-
-            emit Set_PID_received(msg);
-            break;
-        case 4: //SetMainPower
-
-            emit Set_Main_Power_received(msg);
-        break;
-    }
-    msg.clear();
-}
-
-void Message_Handler::tester(Quadro_msg msg){
-
-     QTextStream(stdout) << "MessageType : " << msg.MessageType << endl;
-
-}
