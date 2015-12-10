@@ -25,12 +25,14 @@ ApplicationWindow::ApplicationWindow(QObject *rootObject, QQmlContext& qmlContex
         this, SLOT(SetPIDCommand()));
     QObject::connect(mainWindowObject, SIGNAL(refreshPIDCpp()),
         this, SLOT(RefreshPIDCommand()));
+    QObject::connect(mainWindowObject, SIGNAL(sendIPCpp()),
+        this, SLOT(SendIPCommand()));
 
     qDebug() << "ApplicationWindow inicializálva.";
 }
 
 void ApplicationWindow::PowerSwitchCommand()
-{    
+{
     QString msg = "{\"MessageType\":\"SetMainPower\",\"MainPowerStatus\":\"";
     QObject * inputP = mainWindowObject->findChild<QObject*>("PW_button");
     if (inputP->property("state") == "on")
@@ -61,6 +63,14 @@ void ApplicationWindow::RefreshPIDCommand()
 {
     QString msg = "{\"MessageType\":\"GetPID\",\"Kp\":4,\"Ki\":12,\"Kd\":44}";
     emit TCP_send(msg);
+}
+
+void ApplicationWindow::SendIPCommand()
+{
+    QObject * inputP = mainWindowObject->findChild<QObject*>("iptext");
+    // msg += inputP->property("text").toString();
+    inputP = mainWindowObject->findChild<QObject*>("porttext");
+    // msg += inputP->property("text").toString();
 }
 
 void ApplicationWindow::StateChanged()
