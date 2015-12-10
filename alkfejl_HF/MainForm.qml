@@ -13,6 +13,7 @@ Item {
     signal powerSwitch; // a kezelőfelületen megnyomható gombokhoz tartozó jelek
     signal set_PID;
     signal refresh_PID;
+    signal send_IP;
 
     // kezdésként külön ablakban meg kell adni az eszköz IP-címét és a csatlakoztatni kívánt port számát
     Dialog {
@@ -22,7 +23,7 @@ Item {
         visible: false
         modality: Qt.ApplicationModal
         title: "Connecting"
-        onAccepted: nop
+        onAccepted: send_IP()
         ColumnLayout {
             id: connectColumn
             spacing: 15
@@ -30,6 +31,7 @@ Item {
                 id: connectRow1
                 Text { text: "IP Address: "}
                 TextField {
+                    objectName: "iptext"
                     validator: RegExpValidator {
                         regExp: /^(([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])\.){3}([0-9]|[1-9][0-9]|1[0-9]{2}|2[0-4][0-9]|25[0-5])$/gm
                         }
@@ -48,6 +50,7 @@ Item {
                 width: connectRow1.width
                 Text { text: "Port: "}
                 TextField {
+                    objectName: "porttext"
                     anchors.right: parent.right
                     validator: IntValidator {
                         bottom: 0
@@ -95,11 +98,11 @@ Item {
         RowLayout {
             id: rotation
             anchors.fill: parent
-            transform: Rotation {
+           /* transform: Rotation {
                             origin.x: rotation.width/2
                             origin.y: rotation.height/2
                             angle: kalmanAngle
-            }
+            }*/
             Image {
                 id: raise
                 anchors.left: parent.left
@@ -108,9 +111,9 @@ Item {
                 anchors.verticalCenter: parent.verticalCenter
                 source: "/pics/raise.png"
                 anchors.fill: parent
-                transform: Translate {
+               /* transform: Translate {
                     y: kalmanOffset
-                }
+                }*/
             }
         }
         Image {
@@ -119,7 +122,7 @@ Item {
             anchors.top: parent.top
             source: "/pics/rot.png"
             anchors.fill: parent
-            transform: Rotation { angle: kalmanAngle; origin.x: rot.width/2; origin.y: rot.height/2 }
+            /*transform: Rotation { angle: kalmanAngle; origin.x: rot.width/2; origin.y: rot.height/2 }*/
         }
         Image {
             id: frame
@@ -149,7 +152,7 @@ Item {
                 anchors.left: parent.left
                 anchors.right: parent.right
                 anchors.leftMargin: 24
-                anchors.rightMargin: 24                               
+                anchors.rightMargin: 24
                 Rectangle {
                     objectName: "PW_button"
                     id: container
@@ -158,7 +161,7 @@ Item {
                     border.width: 2
                     radius: 5
                     function toggle() {
-                        if (state == "on") { 
+                        if (state == "on") {
                             state = "off"
                             powerSwitch()
                         }
@@ -183,7 +186,7 @@ Item {
                     Text { id: btnText; text: "Power Off"; anchors.left: parent.left; anchors.leftMargin: 0; verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter; anchors.verticalCenter: parent.verticalCenter; anchors.horizontalCenter: parent.horizontalCenter; anchors.top: parent.top; }
                     MouseArea { id: region; anchors.verticalCenter: parent.verticalCenter; anchors.top: parent.top; anchors.right: parent.right; anchors.left: parent.left; onReleased: (container.state == "off") ? container.toggle() : powerOffDialog.open() }
                 }
-            }          
+            }
     }
 
     // A PID parancsai
@@ -204,7 +207,7 @@ Item {
             // A Set gombbal beállítható a beírt érték, a Refresh-sel pedig a visszaállítást akadályozzuk meg
             Button {
                 id: setPID
-                anchors.left: parent.left                
+                anchors.left: parent.left
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 text: qsTr("Set PID")
@@ -212,7 +215,7 @@ Item {
             }
             Button {
                 id: refreshPID
-                anchors.right: parent.right                
+                anchors.right: parent.right
                 anchors.top: parent.top
                 anchors.bottom: parent.bottom
                 text: qsTr("Refresh PID")
@@ -237,7 +240,7 @@ Item {
             anchors.fill: parent
             spacing: 10
             // Az oszlopon belül a P, I és D paramétereket jelző betűk
-            // és a beírásra szolgáló mezők egymás mellé helyezése.            
+            // és a beírásra szolgáló mezők egymás mellé helyezése.
             RowLayout {
                 id: rowLayout2
                 width: 150
@@ -251,7 +254,7 @@ Item {
                     anchors.topMargin: 5
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignTop
-                    text: " P: "                         
+                    text: " P: "
                     font.bold: true
                     font.pointSize: 24
                 }
@@ -292,7 +295,7 @@ Item {
                     anchors.topMargin: 5
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignTop
-                    text: " I: " 
+                    text: " I: "
                     font.bold: true
                     font.pointSize: 24
                 }
@@ -333,7 +336,7 @@ Item {
                     anchors.topMargin: 5
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignTop
-                    text: " D: "                  
+                    text: " D: "
                     font.bold: true
                     font.pointSize: 24
                 }
@@ -346,7 +349,7 @@ Item {
                     anchors.leftMargin: 60
                     horizontalAlignment: Text.AlignHCenter
                     font.bold: true
-                    font.pointSize: 18   
+                    font.pointSize: 18
                     validator: IntValidator {
                                     bottom: 0
                                     top: 50
@@ -382,7 +385,7 @@ Item {
             anchors.leftMargin: 15
             anchors.rightMargin: 15
             anchors.verticalCenter: parent.verticalCenter
-            anchors.verticalCenterOffset: 2         
+            anchors.verticalCenterOffset: 2
             spacing: 70
             Text {
                 width: 100
@@ -438,6 +441,7 @@ Item {
                 anchors.right: parent.right
                 anchors.left: parent.left
                 anchors.top: parent.top
+                elide: Text.ElideMiddle
                 horizontalAlignment: Text.AlignHCenter
                 font.bold: true
                 font.pointSize: 12
@@ -448,6 +452,7 @@ Item {
                 anchors.leftMargin: 10
                 anchors.right: parent.right
                 anchors.rightMargin: 0
+                elide: Text.ElideMiddle
                 horizontalAlignment: Text.AlignHCenter
                 font.bold: true
                 font.pointSize: 12
@@ -458,6 +463,7 @@ Item {
                 anchors.leftMargin: 10
                 anchors.right: parent.right
                 anchors.rightMargin: 0
+                elide: Text.ElideMiddle
                 horizontalAlignment: Text.AlignHCenter
                 font.bold: true
                 font.pointSize: 12
@@ -468,6 +474,7 @@ Item {
                 anchors.leftMargin: 10
                 anchors.right: parent.right
                 anchors.rightMargin: 0
+                elide: Text.ElideMiddle
                 horizontalAlignment: Text.AlignHCenter
                 font.bold: true
                 font.pointSize: 12
@@ -478,6 +485,7 @@ Item {
                 anchors.leftMargin: 10
                 anchors.right: parent.right
                 anchors.rightMargin: 0
+                elide: Text.ElideMiddle
                 horizontalAlignment: Text.AlignHCenter
                 font.bold: true
                 font.pointSize: 12
