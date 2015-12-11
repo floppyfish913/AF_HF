@@ -19,8 +19,7 @@ TCP_com::TCP_com(QObject *parent) : QThread(parent)
 */
 bool TCP_com::connect_to(){
     socket->connectToHost(Server,port);
-    socket->waitForConnected();
-    return true;
+    return socket->waitForConnected();
 }
 
 /**
@@ -91,4 +90,9 @@ void TCP_com::readyRead(){
     MSG_parser->parser(data);
     handler(MSG_parser->msg);
 
+}
+
+void TCP_com::connect_to_device(QString Server, int port)
+{
+    connect_to();
 }
