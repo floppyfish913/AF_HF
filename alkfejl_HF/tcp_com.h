@@ -60,9 +60,11 @@ signals:
     void Get_PID_received(Quadro_msg msg);
     void Set_PID_received(Quadro_msg msg);
     void Set_Main_Power_received(Quadro_msg msg);
+    void connection_failed();
 public slots:
     void readyRead();
     void send(QString command);
+    void connect_to_device(QString, int);
 };
 
 #endif // TCP_COM_H
