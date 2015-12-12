@@ -1,0 +1,12 @@
+INPUT(
+./debug/main.o
+./debug/applicationwindow.o
+./debug/message_handler.o
+./debug/quadro_msg.o
+./debug/tcp_com.o
+./debug/qrc_qml.o
+./debug/moc_applicationwindow.o
+./debug/moc_message_handler.o
+./debug/moc_quadro_msg.o
+./debug/moc_tcp_com.o
+);

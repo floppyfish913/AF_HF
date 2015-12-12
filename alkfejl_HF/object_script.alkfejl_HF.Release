@@ -1,0 +1,12 @@
+INPUT(
+./release/main.o
+./release/applicationwindow.o
+./release/message_handler.o
+./release/quadro_msg.o
+./release/tcp_com.o
+./release/qrc_qml.o
+./release/moc_applicationwindow.o
+./release/moc_message_handler.o
+./release/moc_quadro_msg.o
+./release/moc_tcp_com.o
+);

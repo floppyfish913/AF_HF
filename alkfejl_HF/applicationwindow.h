@@ -39,6 +39,9 @@ public slots:
     void connection_failed();
     /** A rossz IP-cím megadása után bekövetkező event eseménykezelője */
     void connection_failCommand();
+
+     /** Seikeres kapcsolódás esemény kezelése */
+    void connected();
     /** TCP slotok
      *  Összes állapotjelző érték lekérésének eseménykezelője
      */

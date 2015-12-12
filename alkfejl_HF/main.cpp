@@ -18,6 +18,8 @@ int main(int argc, char *argv[])
     QObject::connect(&Connection,SIGNAL(Get_State_received(Quadro_msg)),appWindow,SLOT(GetState(Quadro_msg)));
     QObject::connect(&Connection,SIGNAL(Get_PID_received(Quadro_msg)),appWindow,SLOT(GetPID(Quadro_msg)));
     QObject::connect(&Connection,SIGNAL(connection_failed()),appWindow,SLOT(connection_failed()));
+    QObject::connect(&Connection,SIGNAL(connected()),appWindow,SLOT(connected()));
+    QObject::connect(appWindow,SIGNAL(destroyed(QObject*)),&Connection,SLOT(disconnect_from()));
 
     return app.exec();
 }

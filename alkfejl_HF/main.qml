@@ -9,7 +9,7 @@ ApplicationWindow {
     height: 630
     maximumWidth: 940 // maximális méret
     maximumHeight: 630
-    visible: true
+    visible: false
 
     // QML oldali signalok
     signal powerSwitchCpp()

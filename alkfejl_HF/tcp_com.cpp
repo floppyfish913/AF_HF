@@ -19,7 +19,7 @@ TCP_com::TCP_com(QObject *parent) : QThread(parent)
 */
 bool TCP_com::connect_to(){
     socket->connectToHost(Server,port);
-    return socket->waitForConnected();
+    return socket->waitForConnected(3000);
 }
 
 /**
@@ -46,17 +46,22 @@ void TCP_com::send(QString msg){
     socket->waitForBytesWritten(3000);
 }
 /**
-* Kapcsolatadatok beállítása
+* TCP port beállítása
 */
 void TCP_com::setPort(int port){
     this->port = port;
 }
+/**
+* TCP Server IP címének beállítása
+*/
 void TCP_com::setServer(QString server){
 
     this->Server = server;
 
 }
-
+/**
+* Beérkezett üzenetek feldolgozása
+*/
 void TCP_com::handler(Quadro_msg &msg){
 
     //caling GUI functions
@@ -83,7 +88,9 @@ void TCP_com::handler(Quadro_msg &msg){
     msg.clear();
 }
 
-
+/**
+* Beérkezett üzenetek feldolgozása
+*/
 void TCP_com::readyRead(){
     //QTextStream(stdout) << "MSG! >>>>>>>>>"<<endl;
     QByteArray data = socket->readAll();
@@ -91,8 +98,23 @@ void TCP_com::readyRead(){
     handler(MSG_parser->msg);
 
 }
+/**
+* Szétkapcsolás event slot
+*/
+void TCP_com::disconnect_from(){
+   socket->disconnectFromHost();
+   socket->waitForDisconnected();
+}
 
+/**
+* Kapcsolódás eventet figyelő slot
+*/
 void TCP_com::connect_to_device(QString Server, int port)
 {
-    connect_to();
+    setServer(Server);
+    setPort(port);
+    if (connect_to())
+        emit connected();
+    else
+        emit connection_failed();
 }

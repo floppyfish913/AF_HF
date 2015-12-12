@@ -1,9 +1,15 @@
 #include "quadro_msg.h"
 
+/**
+* Konstruktor
+*/
 Quadro_msg::Quadro_msg(QObject *parent) : QObject(parent)
 {
    this->clear();
 }
+/**
+* Copy Konstruktor
+*/
 
 Quadro_msg::Quadro_msg(const Quadro_msg& other){
     MessageType = other.MessageType;
@@ -21,6 +27,10 @@ Quadro_msg::Quadro_msg(const Quadro_msg& other){
     SetPIDSuccess = other.SetPIDSuccess;
 
 }
+/**
+*   Üzenet adatainak törlése
+*/
+
 void Quadro_msg::clear()
 {
     MessageType = 0;
@@ -37,7 +47,9 @@ void Quadro_msg::clear()
     Kd = 0;
     SetPIDSuccess = false;
 }
-
+/**
+* Feldolgozott üzenet kiírása a standard kimenetre
+*/
 void Quadro_msg::out(){
     QString full="";
     if (MessageType){

@@ -61,8 +61,10 @@ signals:
     void Set_PID_received(Quadro_msg msg);
     void Set_Main_Power_received(Quadro_msg msg);
     void connection_failed();
+    void connected();
 public slots:
     void readyRead();
+    void disconnect_from();
     void send(QString command);
     void connect_to_device(QString, int);
 };

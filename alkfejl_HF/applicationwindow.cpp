@@ -99,6 +99,13 @@ void ApplicationWindow::connection_failCommand(){
     inputP->setProperty("visible",QVariant::fromValue(true));
 }
 
+void ApplicationWindow::connected(){
+
+    QObject * inputP = mainWindowObject;
+    inputP->setProperty("visible",QVariant::fromValue(true));
+
+}
+
 QQuickItem* ApplicationWindow::findItemByName(const QString& name)
 {
     Q_ASSERT(mainWindowObject != nullptr);

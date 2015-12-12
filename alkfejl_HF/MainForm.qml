@@ -389,12 +389,12 @@ Item {
     // Az eszközről bejövő adatok kijelzése
     GroupBox {
         id: gyr
-       /*anchors.left: angoffset.right // elhelyezkedés leírása
+        anchors.left: angoffset.right // elhelyezkedés leírása
         anchors.leftMargin: 10
         anchors.right: rectangle1.right
         anchors.top: pidCommands.bottom
         anchors.topMargin: 0
-        anchors.bottom: angoffset.bottom*/
+        anchors.bottom: angoffset.bottom
 
     // Egy oszlopban az összes adat kijelzése 45 pontnyi eltéréssel a sorok között
        ColumnLayout {

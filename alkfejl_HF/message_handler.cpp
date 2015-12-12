@@ -7,7 +7,7 @@
 
 Message_Handler::Message_Handler(QObject * parent) : QObject(parent)
 {
-    msg.clear()
+    msg.clear();
 }
 
 /**
