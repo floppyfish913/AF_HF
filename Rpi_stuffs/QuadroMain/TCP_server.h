@@ -1,3 +1,8 @@
+#ifndef _TCP_SERVER_H
+#define _TCP_SERVER_H
+
+
+
 #include <sys/socket.h>       /*  socket definitions        */
 #include <sys/types.h>        /*  socket types              */
 #include <arpa/inet.h>        /*  inet (3) funtions         */
@@ -13,6 +18,8 @@
 #include "PCA9685.h"
 
 
+
+//it needs an available IMU, and an available PWM module class(PCA9685) class,
 class MainTCPserver{
 
 	private:
@@ -35,12 +42,10 @@ class MainTCPserver{
 
 	public:
 
-	//variables
-
 	//functions
-	MainTCPserver(char* address,int port);
+	MainTCPserver(int port);
 	int start_listening(void);
 	int stop_listening(void);
 	void report_state();
 };
-
+#endif

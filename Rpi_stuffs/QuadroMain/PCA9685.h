@@ -32,6 +32,7 @@
 //PowerSwitch: pin 11 (which is GPIO pin 17)
 #define POWERPIN RPI_GPIO_P1_11
 
+
 // Register Definitions
 
 #define MODE1 0x00			//Mode  register  1
@@ -56,10 +57,7 @@
 //! Main class that exports features for PCA9685 chip
 class PCA9685 {
 public:
-
-	int StateArray[16];
-	bool MainPowerState;
-
+	bool StartMotors();
 	PCA9685();
 	void init(int,int);
 	virtual ~PCA9685();
@@ -69,6 +67,9 @@ public:
 	void setPWM(uint8_t, int);
 	bool SetMainPower(bool SwitchState);
 	bool GetMainPower();
+
+	int MotorStateArray[4];
+
 private:
 	int _i2caddr;
 	int _i2cbus;
@@ -77,6 +78,7 @@ private:
 	uint8_t read_byte(int, uint8_t);
 	void write_byte(int, uint8_t, uint8_t);
 	int openfd();
+	
 
 
 };

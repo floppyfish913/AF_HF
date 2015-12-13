@@ -1,55 +1,79 @@
 #include "MPU6050.h"
 
 #define RESTRICT_PITCH // Comment out to restrict KFData.roll to ±90deg instead
-char regaddr[2];
 
+
+
+/**
+
+constructor function of the IMU class
+
+this library is designed to an MPU9250 or MPU6050 or any compatible IMU
+
+1,identify the module
+2,it sets the detailed registers
+3,reads the raw gyroscope, and acceleromter data from registers - saves to the structures
+4,kalman filters the raw data, and saves the data
+
+*/
 IMU::IMU(void)
 {	 
 
 	char buf[1];
-	bcm2835_init();
-	bcm2835_i2c_begin();
-	bcm2835_i2c_setSlaveAddress(MPU6050_ADDRESS);
-	WriteRegister(SMPRT_DIV,0x07);	// Set the sample rate to 1000Hz - 8kHz/(7+1) = 1000Hz
-	WriteRegister(CONFIG,0x00); // Disable FSYNC and set 260 Hz Acc filtering, 256 Hz Gyro filtering, 8 KHz sampling
-	WriteRegister(GYRO_CONFIG,0x00); //250dpi
-	WriteRegister(ACCEL_CONFIG,0x00); //2g resolution
-	WriteRegister(PWR_MGMT_1,0x00); //sleep mode disabled
+	char regaddr[2];	
 
+	bcm2835_init(); //setting the memory address
+	bcm2835_i2c_begin(); //enabling the I2C ports
+	bcm2835_i2c_setSlaveAddress(MPU6050_ADDRESS); //setting the device addresss
 	
+	
+	
+	
+
+
+	// validating IMU, if success, having the first measure
 	regaddr[0]=WHO_AM_I;
 	bcm2835_i2c_write(regaddr, 1);
+	buf[0]=0;
 	bcm2835_i2c_read(buf, 1);
-	if(buf[0]==0x88)
+	if(buf[0]==0x71)
 	{
+		WriteIMURegister(SMPRT_DIV,0x07);	// Set the sample rate to 1000Hz - 8kHz/(7+1) = 1000Hz
+		WriteIMURegister(CONFIG,0x00); // Disable FSYNC and set 260 Hz Acc filtering, 256 Hz Gyro filtering, 8 KHz sampling
+		WriteIMURegister(GYRO_CONFIG,0x00); //250dpi
+		WriteIMURegister(ACCEL_CONFIG,0x00); //2g resolution
+		WriteIMURegister(PWR_MGMT_1,0x00); //sleep mode disabled
+		//for further informatin please check the data sheet of the IMU
 		printf("sensor config was successful WHO_AM_I: %x\n",buf[0]);
+		
+		
+		ReadGyr();
+		ReadAccel();
+		#ifdef RESTRICT_PITCH // Eq. 25 and 26
+	  	KFData.roll  = atan2(AData.y, AData.z) * RAD_TO_DEG;
+	 	KFData.pitch = atan(-AData.x / sqrt(AData.y * AData.y + AData.z * AData.z)) * RAD_TO_DEG;
+		#else // Eq. 28 and 29
+	 	 KFData.roll  = atan(AData.y / sqrt(AData.x * AData.x + AData.z * AData.z)) * RAD_TO_DEG;
+		  KFData.pitch = atan2(-AData.x, AData.z) * RAD_TO_DEG;
+		#endif
+
+	kalmanX.setAngle(KFData.roll); // Set starting angle
+  	kalmanY.setAngle(KFData.pitch);
 	}
 	else
 	{
 		printf("sensor config was unsuccessful, %x\n",buf[0]);
 	}
-	
-	bcm2835_i2c_end();
-	///////////SETUP VARIABLES
+	}
 
-	ReadGyr();
-	ReadAccel();
-	#ifdef RESTRICT_PITCH // Eq. 25 and 26
-	  KFData.roll  = atan2(AData.y, AData.z) * RAD_TO_DEG;
-	  KFData.pitch = atan(-AData.x / sqrt(AData.y * AData.y + AData.z * AData.z)) * RAD_TO_DEG;
-	#else // Eq. 28 and 29
-	  KFData.roll  = atan(AData.y / sqrt(AData.x * AData.x + AData.z * AData.z)) * RAD_TO_DEG;
-	  KFData.pitch = atan2(-AData.x, AData.z) * RAD_TO_DEG;
-	#endif
+/**
+reads the relevant register pairs of the gyroscope, and loads them into the structure variable in the class
 
-	kalmanX.setAngle(KFData.roll); // Set starting angle
-  	kalmanY.setAngle(KFData.pitch);
-
-
-}
+*/
 
 void IMU::ReadGyr()
 {
+	bcm2835_i2c_setSlaveAddress(MPU6050_ADDRESS);
 	//printf("G:");
 	GData.x=ReadRegisterPair(GYRO_XOUT_H);
 	GData.y=ReadRegisterPair(GYRO_YOUT_H);
@@ -59,17 +83,27 @@ void IMU::ReadGyr()
 
 }
 
+/**
+reads the relevant register pairs of the accelerometer, and loads them into the structure variable in the class
+
+*/
+
 void IMU::ReadAccel()
 {
+	bcm2835_i2c_setSlaveAddress(MPU6050_ADDRESS);
 	//printf("A:");
 	AData.x=ReadRegisterPair(ACCEL_XOUT_H);
 	AData.y=ReadRegisterPair(ACCEL_YOUT_H);
-	AData.z=ReadRegisterPair(ACCEL_ZOUT_H);
-	
+	AData.z=ReadRegisterPair(ACCEL_ZOUT_H);	
 	//printf("Acc: %f %f %f\n",AData.x,AData.y,AData.z);
 	return;
 
 }
+
+/**
+it is just a debug function
+
+*/
 
 void IMU::PrintDatas()
 {
@@ -78,49 +112,20 @@ void IMU::PrintDatas()
 
 }
 
-int ReadRegisterPair(int REG_H)
-{
-	char buf[1];
-	int ret;
-	int value = 0;
-	
 
-	bcm2835_i2c_begin();
-	bcm2835_i2c_setSlaveAddress(MPU6050_ADDRESS);
+/**
+This function calls the register reads to get the gyroscope, and accelerometer datas, and analyzes the readed datas
+The method to minimalize the drifft, of the data, and get a better orientation data is called to Kalman filtering
 
-	regaddr[0]=REG_H;
-	ret = BCM2835_I2C_REASON_ERROR_DATA;
-	while(ret != BCM2835_I2C_REASON_OK)
-	{
-		//This is the basic operation to read an register
-		//regaddr[0] is the register address
-		//buf[0] is the value
-		bcm2835_i2c_write(regaddr, 1);
-		ret = bcm2835_i2c_read(buf, 1);
-		//printf("%d\n",ret);
-	}
-	value = buf[0]<<8;
-	regaddr[0]=(REG_H+1);
-	
-    	ret = BCM2835_I2C_REASON_ERROR_DATA;
-    	while(ret != BCM2835_I2C_REASON_OK)
-	{
-		bcm2835_i2c_write(regaddr, 1);
-		ret = bcm2835_i2c_read(buf, 1);
-	}
-	value += buf[0];
-	if (value & 1<<15)
-   	{
-        	value -= 1<<16;
-   	}
-	bcm2835_i2c_end();
-	//printf("%d ",value);
-	return value;
+To process the readed gyroscope data you need a known sampling time, it in this program it is set to 100 Hz, to set the time
+check the Timer class
 
 
-}
+As a template i used this example, for further information, please check this link:
+https://github.com/TKJElectronics/KalmanFilter/blob/master/examples/MPU6050/MPU6050.ino
+*/
 
-void IMU::KalmanFiltering()
+void IMU::KalmanFiltering() 
 {
 		
 		//reading new datas
@@ -169,22 +174,22 @@ void IMU::KalmanFiltering()
 
 }
 
-int WriteRegister(int REG,int value)
-{
 
-	regaddr[0]=REG;
-	regaddr[1]=value;
-	return(bcm2835_i2c_write(regaddr, 2));
-}
+/**
+get the actual time, and it is going to be used as an origo at measuring the elapsed time
 
-
+*/
 void Timer::StartCycle()
 {
 	gettimeofday(&t1, NULL);
 }
 
+/**
+waiting a given amount of time, the elapsed time is compared to time what was set in "StartCycle"
 
-int Timer::WaitMs(int ms)
+*/
+
+int Timer::WaitMs(int ms) 
 {
 	elapsedTime=0;
 	int i=0;
@@ -208,6 +213,13 @@ int Timer::WaitMs(int ms)
 }
 
 
+/**
+
+	gives back the elapsed time betwen t1 and the actual moment
+
+*/
+
+
 double Timer::CountElapsedTime()
 {
 
@@ -220,8 +232,58 @@ double Timer::CountElapsedTime()
 
 
 
+/**
+it just simply reads two registers in a row from the I2C bus
+the given register address is the first
+*/
+
+int ReadRegisterPair(int REG_H)
+{
+	char buf[1];
+	int ret;
+	int value = 0;
+
+	char regaddr[2];
+	regaddr[0]=REG_H;
+	ret = BCM2835_I2C_REASON_ERROR_DATA;
+	while(ret != BCM2835_I2C_REASON_OK)
+	{
+		bcm2835_i2c_write(regaddr, 1);
+		ret = bcm2835_i2c_read(buf, 1);		
+	}
+	value = buf[0]<<8;
+	regaddr[0]=(REG_H+1);
+	
+    	ret = BCM2835_I2C_REASON_ERROR_DATA;
+    	while(ret != BCM2835_I2C_REASON_OK)
+	{
+		bcm2835_i2c_write(regaddr, 1);
+		ret = bcm2835_i2c_read(buf, 1);
+	}
+	value += buf[0];
+	if (value & 1<<15)
+   	{
+        	value -= 1<<16;
+   	}
+	//printf("%d ",value);
+	return value;
 
 
+}
+
+
+/**
+it writes a given value into a given register on I2C bus
+
+*/
+
+int WriteIMURegister(int REG,int value)
+{
+	char regaddr[2];
+	regaddr[0]=REG;
+	regaddr[1]=value;
+	return(bcm2835_i2c_write(regaddr, 2));
+}
 
 
 

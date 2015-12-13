@@ -47,12 +47,11 @@
 void PCA9685::init(int bus, int address) {
 	_i2cbus = bus;
 	_i2caddr = address;
-
-	bcm2835_init();
-	bcm2835_gpio_fsel(POWERPIN, BCM2835_GPIO_FSEL_OUTP);
-	MainPowerState=SetMainPower(true); //turn on motors
-
 	snprintf(busfile, sizeof(busfile), "/dev/i2c-%d", bus);
+
+	bcm2835_init(); 	//init bcm chip for power switch
+	bcm2835_gpio_fsel(POWERPIN, BCM2835_GPIO_FSEL_OUTP); //set GPIO17 (pin11) as the power switch pin
+	SetMainPower(true); //set power on
 	reset();
 	//usleep(10*1000);
 }
@@ -103,7 +102,6 @@ void PCA9685::setPWMFreq(int freq) {
  */
 void PCA9685::setPWM(uint8_t led, int value) {
 	setPWM(led, 0, value);
-	StateArray[led]=value;
 }
 //! PWM a single channel with custom on time
 /*!
@@ -125,6 +123,7 @@ void PCA9685::setPWM(uint8_t led, int on_value, int off_value) {
 		
 		close(fd);
 	} 
+	MotorStateArray[led]=off_value-on_value;
 
 }
 
@@ -187,6 +186,13 @@ int PCA9685::openfd() {
 }
 
 
+
+
+
+
+
+
+
 bool PCA9685::SetMainPower(bool SwitchState)
 {
 	if(SwitchState)
@@ -208,25 +214,33 @@ bool PCA9685::GetMainPower()
 }
 
 
+/** To start a Gaui ESC you need:
+1, a 270Hz PWM signal (3ms
+2, set pwm signal to the maximum: 2/3-> 66%
+3, what a short time
+4, set the pwm signal to the minimum: 1/3-> 33%
 
+*/
+bool PCA9685::StartMotors()
+{
+	printf("StartMotors\n");
+	setPWMFreq(270);
+	SetMainPower(false); 
+	setPWM(0,1240);//MAX 2/3.3 * 4095
+	
+	usleep(2000 * 1000);
+	SetMainPower(true); 
+	setPWM(0,2481);//MAX 2/3.3 * 4095
+	/*setPWM(2,2481);//MAX 2/3.3 * 4095
+	setPWM(1,2481);//MAX 2/3.3 * 4095
+	setPWM(3,2481);//MAX 2/3.3 * 4095*/
+	usleep(2000 * 1000);
 
+	setPWM(0,1300);//MIN 1/3.3 * 4095
+	/*setPWM(2,1240);//MIN 1/3.3 * 4095
+	setPWM(1,1240);//MIN 1/3.3 * 4095
+	setPWM(3,1240);//MIN 1/3.3 * 4095*/
+	usleep(2000 * 1000);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 

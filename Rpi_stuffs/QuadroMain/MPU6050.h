@@ -1,4 +1,6 @@
-#include <bcm2835.h>
+#ifndef _MPU6050_H
+#define _MPU6050_H
+
 #include <stdio.h>
 #include <time.h>
 #include <stdlib.h>
@@ -6,7 +8,7 @@
 #include <unistd.h>
 #include <math.h>
 #include "Kalman.h"
-
+#include <bcm2835.h>
 
 #define MPU6050_ADDRESS 0x68
 #define SMPRT_DIV 0x19 //Sample Rate Divider
@@ -37,10 +39,8 @@
 #define RAD_TO_DEG 57.29578
 #define M_PI 3.14159265358979323846
 #define DT 0.01
-
+int WriteIMURegister(int REG,int value);
 int ReadRegisterPair(int REG_H);
-int WriteRegister(int REG,int value);
-
 
 class IMU
 {
@@ -96,3 +96,5 @@ class Timer
 		int WaitMs(int ms);
 
 };
+
+#endif
