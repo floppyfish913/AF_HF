@@ -23,7 +23,7 @@
  <tbody>
  <tr style="height: 56px;">
   <td id="projectalign" style="padding-left: 0.5em;">
-   <div id="projectname">quadcopter
+   <div id="projectname">quadro copter
    </div>
   </td>
  </tr>
@@ -82,18 +82,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="headertitle">
-<div class="title">Timer Member List</div>  </div>
+<div class="title">IMU Member List</div>  </div>
 </div><!--header-->
 <div class="contents">
 
-<p>This is the complete list of members for <a class="el" href="classTimer.html">Timer</a>, including all inherited members.</p>
+<p>This is the complete list of members for <a class="el" href="classIMU.html">IMU</a>, including all inherited members.</p>
 <table class="directory">
-  <tr class="even"><td class="entry"><a class="el" href="classTimer.html#a5f490b99b8aef9af4f149ee8820e034a">CountElapsedTime</a>()</td><td class="entry"><a class="el" href="classTimer.html">Timer</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classTimer.html#a5103133958f648833d91f18c109bfec0">elapsedTime</a></td><td class="entry"><a class="el" href="classTimer.html">Timer</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classTimer.html#a0cecac03262b40481fec9f8a909c4f65">StartCycle</a>()</td><td class="entry"><a class="el" href="classTimer.html">Timer</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classTimer.html#a658aec7bed96cc71157362d7d9a99f41">t1</a></td><td class="entry"><a class="el" href="classTimer.html">Timer</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classTimer.html#ac1a983a15a5d1329b922ce6cea0c8161">t2</a></td><td class="entry"><a class="el" href="classTimer.html">Timer</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classTimer.html#a69eedbb69c3799a4e550af5c9279789b">WaitMs</a>(int ms)</td><td class="entry"><a class="el" href="classTimer.html">Timer</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classIMU.html#a102d9586f6a2d73a78b62b0d9b93209b">AData</a></td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classIMU.html#ac0e06651cdfaff8cfde39c4f5705afae">Altitude</a></td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classIMU.html#adc3c45b57703a89a2b437e5137a4c9cb">GData</a></td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classIMU.html#a9c600f8be2588873cb444b35e8cd8678">IMU</a>(void)</td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classIMU.html#a033bd0ab1f7fc4f3e9b21dd1d678c85b">KalmanFiltering</a>()</td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classIMU.html#ab66f2672d8deb4ff4a9a895aadf2831f">kalmanX</a></td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classIMU.html#ac263d50aa9a05a649d430f9a7b9ccc34">kalmanY</a></td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classIMU.html#a3dc32978dadcba15e3b140edfed999d3">KFData</a></td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classIMU.html#afbed94d94bbe85d6c6b1dc1e91ed874f">KFilterData</a> typedef</td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classIMU.html#abf04bc27dfca95c597025b94adf94714">PrintDatas</a>()</td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classIMU.html#abb4d092ccb7363f5c1bf7d699b3ef316">RawData</a> typedef</td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classIMU.html#a6ecd4b88203d60e05ae4be57b8e0670f">ReadAccel</a>()</td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classIMU.html#ab54b09173dbd4d50dc9bb63ab95784ef">ReadGyr</a>()</td><td class="entry"><a class="el" href="classIMU.html">IMU</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>
